@@ -1,0 +1,155 @@
+{
+  "slug": "flashrt-agent-harness-guiding-agents-dep-718171",
+  "arxiv_id": "arxiv:2607.18171",
+  "topic": "agent-harness",
+  "task_title": "Measurement-Gated Pipeline Deployment Optimizer",
+  "one_liner": "Build an IR for a small dataflow pipeline, validate persistent-state scopes, and run a deterministic measurement-gated coordinate-descent optimizer over placement, sharding, and streaming choices.",
+  "difficulty": "medium",
+  "estimated_minutes": 30,
+  "paper_concepts": [
+    "chain-of-program",
+    "intermediate representation",
+    "persistent-state scopes",
+    "sequential interpreter validation",
+    "measurement-gated optimization",
+    "placement and intra-model parallelism"
+  ],
+  "deliverable": {
+    "path": "answer.json",
+    "format": "json",
+    "schema": "Object with keys: topological_order (list[str]), state_scopes (list of {key:str, stages:list[str]}), final_plan (list[str] of 'stage:candidate'), accepted (list[str]), metrics ({latency_ms:number, throughput:number, objective:number}), passes_used (int). Example: {'topological_order':['s1','s2'],'state_scopes':[],'final_plan':['s1:ref','s2:ref'],'accepted':[],'metrics':{'latency_ms':0.0,'throughput':0.0,'objective':0.0},'passes_used':0}"
+  },
+  "graded_paths": [
+    "topological_order",
+    "state_scopes",
+    "final_plan",
+    "accepted",
+    "metrics.latency_ms",
+    "metrics.throughput",
+    "metrics.objective",
+    "passes_used"
+  ],
+  "tolerances": {
+    "metrics.latency_ms": 0.001,
+    "metrics.throughput": 0.001,
+    "metrics.objective": 0.001
+  },
+  "design_rationale": "The task isolates the paper's chain-of-program harness into a deterministic optimizer. The solver must build and use an IR (topological order and state scopes), validate persistent-state constraints, then run a measurement-gated coordinate-descent loop over placement, sharding, and streaming choices. The fixture includes a persistent-state scope, a tie candidate, and many negative-delta candidates so accepting the wrong update changes the final plan or metrics.",
+  "verification_notes": "Run the reference solution in a directory containing only starter files. It should write answer.json with topological_order ['s1','s2','s3','s4','s5','s6'], state_scopes [{'key':'kv','stages':['s3','s4']}], final_plan ['s1:move1','s2:shard2','s3:chunk2','s4:chunk2','s5:move1','s6:shard2'], accepted equal to final_plan, metrics latency_ms 112.6, throughput 1000.0, objective 12.6, and passes_used 2. The tie candidate 's5:tie_ref' and worse candidates must not enter the final plan.",
+  "starter_files": [
+    "pipeline.json"
+  ],
+  "generated_at": "2026-10-27T02:40:50Z",
+  "validation": {
+    "ok": true,
+    "problems": [],
+    "static": "ok",
+    "checks": 8,
+    "positive_reward": 1.0,
+    "negative_reward": 0.0,
+    "reference_runs": 2
+  },
+  "critic": {
+    "score": 7.0,
+    "verdict": "revise",
+    "paper_fidelity": 7,
+    "clarity": 8,
+    "verifier_strength": 6,
+    "strengths": [
+      "Faithfully abstracts FlashRT's core pieces: IR construction, persistent-state scopes, plan validity, placement/sharding/chunk choices, and measurement-gated coordinate descent.",
+      "The instruction is mostly deterministic and explicit: topological ordering, metrics, gain threshold, pass accounting, output format, and tolerances are all specified.",
+      "The fixture is non-trivial: the final plan depends on two passes and includes non-obvious moves such as s1:move1 and s5:move1, so a one-pass or naive greedy solver can fail.",
+      "The verifier checks multiple final-plan and metrics fields, not just one scalar, and includes a tie-like candidate to catch some naive acceptance behavior.",
+      "The reference solution is consistent with the stated rules and the starter fixture."
+    ],
+    "issues": [
+      "The verifier appears to check only one hard-coded instance. Many specified edge cases are unexercised: branching DAGs with lexicographic Kahn tie-breaking, multiple state scopes, cycle detection, gains exactly equal to min_gain, and objective ties at the strict-inequality boundary.",
+      "The task asks for a deterministic Python program, but only `answer.json` is graded. An agent can bypass writing the program and manually emit the answer, so the operationalization of 'build the optimizer' is weaker than the instruction suggests.",
+      "The undefined term `best_so_far` in the acceptance rule is slightly ambiguous. In this fixture the intended running-best interpretation is equivalent to selecting the smallest accepted trial objective, but the wording could be clearer.",
+      "State-scoped stages can never move as a group under single-stage coordinate descent, because changing only one stage would violate the shared-placement validity rule. This is consistent with the reference, but it means multi-stage state-scope relocation is effectively frozen and untested.",
+      "Rounding semantics are not explicit about whether `objective` is computed from raw metrics or rounded metrics. The fixture avoids a visible discrepancy, but the rule should say it directly."
+    ],
+    "suggestions": [
+      "Add at least one hidden or secondary fixture with a branching DAG and multiple state scopes to exercise lexicographic topological ordering and scope sorting.",
+      "Exercise strict inequalities more directly: include a candidate whose gain is exactly `min_gain`, and a candidate that ties the current objective within the `1e-12` threshold.",
+      "Either require and grade a source file that reads `pipeline.json` and writes `answer.json`, or explicitly state that only the computed `answer.json` is required.",
+      "Define `best_so_far` explicitly as the best accepted trial objective so far for the current stage, initialized to the current objective.",
+      "State that `metrics.objective` is computed from unrounded `latency_ms` and `throughput`, then rounded for output.",
+      "Consider allowing state scopes to be updated as a unit if the intent is to test scope-level placement decisions."
+    ]
+  },
+  "critiques": [
+    {
+      "score": 7.0,
+      "verdict": "revise",
+      "paper_fidelity": 7,
+      "clarity": 8,
+      "verifier_strength": 6,
+      "strengths": [
+        "Faithfully abstracts FlashRT's core pieces: IR construction, persistent-state scopes, plan validity, placement/sharding/chunk choices, and measurement-gated coordinate descent.",
+        "The instruction is mostly deterministic and explicit: topological ordering, metrics, gain threshold, pass accounting, output format, and tolerances are all specified.",
+        "The fixture is non-trivial: the final plan depends on two passes and includes non-obvious moves such as s1:move1 and s5:move1, so a one-pass or naive greedy solver can fail.",
+        "The verifier checks multiple final-plan and metrics fields, not just one scalar, and includes a tie-like candidate to catch some naive acceptance behavior.",
+        "The reference solution is consistent with the stated rules and the starter fixture."
+      ],
+      "issues": [
+        "The verifier appears to check only one hard-coded instance. Many specified edge cases are unexercised: branching DAGs with lexicographic Kahn tie-breaking, multiple state scopes, cycle detection, gains exactly equal to min_gain, and objective ties at the strict-inequality boundary.",
+        "The task asks for a deterministic Python program, but only `answer.json` is graded. An agent can bypass writing the program and manually emit the answer, so the operationalization of 'build the optimizer' is weaker than the instruction suggests.",
+        "The undefined term `best_so_far` in the acceptance rule is slightly ambiguous. In this fixture the intended running-best interpretation is equivalent to selecting the smallest accepted trial objective, but the wording could be clearer.",
+        "State-scoped stages can never move as a group under single-stage coordinate descent, because changing only one stage would violate the shared-placement validity rule. This is consistent with the reference, but it means multi-stage state-scope relocation is effectively frozen and untested.",
+        "Rounding semantics are not explicit about whether `objective` is computed from raw metrics or rounded metrics. The fixture avoids a visible discrepancy, but the rule should say it directly."
+      ],
+      "suggestions": [
+        "Add at least one hidden or secondary fixture with a branching DAG and multiple state scopes to exercise lexicographic topological ordering and scope sorting.",
+        "Exercise strict inequalities more directly: include a candidate whose gain is exactly `min_gain`, and a candidate that ties the current objective within the `1e-12` threshold.",
+        "Either require and grade a source file that reads `pipeline.json` and writes `answer.json`, or explicitly state that only the computed `answer.json` is required.",
+        "Define `best_so_far` explicitly as the best accepted trial objective so far for the current stage, initialized to the current objective.",
+        "State that `metrics.objective` is computed from unrounded `latency_ms` and `throughput`, then rounded for output.",
+        "Consider allowing state scopes to be updated as a unit if the intent is to test scope-level placement decisions."
+      ]
+    }
+  ],
+  "mcode": {
+    "status": "succeeded",
+    "reward": 1.0,
+    "verifier": {
+      "reward": 1.0,
+      "error": null,
+      "elapsed": 0.05,
+      "stdout": "reward=1.0000 checks=8/8\n"
+    },
+    "elapsed": 52.2,
+    "duration_ms": 48837,
+    "model": {
+      "providerId": "custom_provider:tierflow",
+      "modelId": "tierflow_pro",
+      "variant": "thinking",
+      "providerSource": "custom_provider",
+      "providerKind": "custom",
+      "protocol": "openai-completions"
+    },
+    "usage": {
+      "inputTokens": 59513,
+      "outputTokens": 2196,
+      "cacheReadTokens": 16384,
+      "totalTokens": 61709
+    },
+    "run_id": "exec_turn_mvq3vqhb_nlxv9q",
+    "session_id": "mvs_f09f7c06fc5c43cbb2fd42a7b956dabd",
+    "error": null,
+    "output": "`answer.json` written by `solver.py`: topo order `s1..s6`, one `kv` scope (`s3`, `s4`), plan `s1:move1, s2:shard2, s3:chunk2, s4:chunk2, s5:move1, s6:shard2` → latency 112.6 ms, throughput 1000.0, objective 12.6, 2 passes (hand-checked: 103.6 stage latency + 9.0 cross-device edges; max load ratio 1.0 on device 0).",
+    "answer_excerpt": "`answer.json` written by `solver.py`: topo order `s1..s6`, one `kv` scope (`s3`, `s4`), plan `s1:move1, s2:shard2, s3:chunk2, s4:chunk2, s5:move1, s6:shard2` → latency 112.6 ms, throughput 1000.0, objective 12.6, 2 passes (hand-checked: 103.6 stage latency + 9.0 cross-device edges; max load ratio 1.0 on device 0).",
+    "workspace": "runs/mcode-sbx-flashrt-agent-harness-guiding-agents-dep-718171/workspace",
+    "deliverable_written": true,
+    "sandboxed": true
+  },
+  "timings": {
+    "plan_s": 397.7,
+    "build_validate_s": 0.2,
+    "critic_s": 137.7
+  },
+  "model": {
+    "name": "tierflow_pro",
+    "effort": "max"
+  }
+}

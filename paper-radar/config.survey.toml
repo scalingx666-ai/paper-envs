@@ -1,0 +1,72 @@
+# 一年期调研配置：agent harness / RSI / agent environment / post-training / RL infra / inference infra
+# 用法：paper-radar run --config config.survey.toml --since 2025-10-26 --until 2026-10-26
+# 每个主题按 relevance 取前 500 篇，全量入库；导出时不过滤。
+[settings]
+state_dir = "state-survey"
+digest_dir = "digests-survey"
+overlap_days = 2
+initial_lookback_days = 365
+max_lookback_days = 400
+max_results_per_topic = 500
+# 一年调研每个主题一次取满 500 条，减少 TLS 抖动下的请求次数。
+page_size = 500
+# 一年窗口内按相关度排序，避免被最近几周的高产主题淹没。
+sort_by = "relevance"
+request_timeout = 45.0
+retries = 5
+user_agent = "paper-radar/0.1 (mailto:max@example.com)"
+near_dup_days = 365
+
+[[topics]]
+id = "agent-harness"
+name = "Agent Harness / 智能体外壳"
+query = '(abs:"agent harness" OR abs:"agent scaffold" OR abs:"agentic scaffold" OR abs:"agent loop" OR abs:"context engineering" OR abs:"agentic memory") AND (abs:agent OR abs:agents OR abs:LLM OR abs:LLMs) AND (cat:cs.AI OR cat:cs.CL OR cat:cs.LG OR cat:cs.SE)'
+max_results = 500
+include_terms = ["agent harness", "agent scaffold", "agentic scaffold", "agent loop", "context engineering", "agentic memory", "agent framework", "tool calling", "computer use"]
+title_terms = ["agent", "harness", "scaffold", "context"]
+min_score = 3
+
+[[topics]]
+id = "rsi"
+name = "RSI / 递归自我改进"
+query = '(abs:"recursive self-improvement" OR abs:"self-improving agent" OR abs:"self-improving agents" OR abs:"self-improvement" OR abs:"self-evolving agent" OR abs:"self-evolving agents" OR abs:"self-rewarding" OR abs:"open-ended learning") AND (abs:LLM OR abs:LLMs OR abs:agent OR abs:agents OR abs:"language model")'
+max_results = 500
+include_terms = ["recursive self-improvement", "self-improving", "self-improvement", "self-evolving", "self-rewarding", "open-ended learning", "autotelic", "self-play"]
+title_terms = ["self-improvement", "self-evolving", "self-improving", "self-rewarding"]
+min_score = 3
+
+[[topics]]
+id = "agent-environment"
+name = "Agent Environment / 智能体环境"
+query = '(abs:"agent environment" OR abs:"agentic environment" OR abs:"environment design" OR abs:"environment generation" OR abs:"tool environment" OR abs:"simulated environment") AND (abs:agent OR abs:agents OR abs:LLM OR abs:LLMs)'
+max_results = 500
+include_terms = ["agent environment", "agentic environment", "environment design", "environment generation", "tool environment", "simulated environment", "environment scaling", "sandbox"]
+title_terms = ["environment", "agent"]
+min_score = 3
+
+[[topics]]
+id = "post-training"
+name = "后训练 / Post-training"
+query = '(abs:"post-training" OR abs:RLVR OR abs:GRPO OR abs:"preference optimization" OR abs:"supervised fine-tuning" OR abs:"process reward" OR abs:"on-policy distillation" OR abs:"knowledge distillation") AND (abs:LLM OR abs:LLMs OR abs:"language model" OR abs:"language models") AND (cat:cs.LG OR cat:cs.CL OR cat:cs.AI)'
+max_results = 500
+include_terms = ["post-training", "post training", "RLVR", "GRPO", "preference optimization", "supervised fine-tuning", "process reward", "on-policy distillation", "knowledge distillation", "RLHF", "DPO", "reward model", "SFT", "fine-tuning"]
+title_terms = ["training", "alignment", "distillation"]
+min_score = 3
+
+[[topics]]
+id = "rl-infra"
+name = "RL Infra / 强化学习基础设施"
+query = '(abs:"RL infrastructure" OR abs:"RLHF infrastructure" OR abs:"training infrastructure" OR abs:"distributed reinforcement learning" OR abs:"asynchronous reinforcement learning" OR abs:"async RL" OR abs:"rollout engine" OR abs:"rollout generation" OR abs:"RL framework" OR abs:"RL system" OR abs:"reward serving") AND (abs:LLM OR abs:LLMs OR abs:agent OR abs:reinforcement learning) AND (cat:cs.LG OR cat:cs.DC OR cat:cs.AI OR cat:cs.CL)'
+max_results = 500
+include_terms = ["RL infrastructure", "RLHF infrastructure", "training infrastructure", "distributed reinforcement learning", "asynchronous reinforcement learning", "async RL", "rollout engine", "rollout generation", "RL framework", "RL system", "reward serving", "rollout", "training system"]
+title_terms = ["RL", "reinforcement", "infrastructure", "training", "rollout"]
+min_score = 3
+
+[[topics]]
+id = "inference-infra"
+name = "Inference Infra / 推理基础设施"
+query = '(abs:"LLM serving" OR abs:"inference engine" OR abs:"inference infrastructure" OR abs:"KV cache" OR abs:"speculative decoding" OR abs:"disaggregated serving" OR abs:"continuous batching" OR abs:"inference system") AND (abs:LLM OR abs:LLMs OR abs:"language model") AND (cat:cs.LG OR cat:cs.CL OR cat:cs.DC OR cat:cs.AI)'
+max_results = 500
+include_terms = ["LLM serving", "inference engine", "inference infrastructure", "KV cache", "speculative decoding", "disaggregated serving", "continuous batching", "inference system", "prefill", "quantization"]
+title_terms = ["inference", "serving", "cache", "decoding", "prefill"]
+min_score = 3

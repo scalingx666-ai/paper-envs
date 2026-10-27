@@ -1,0 +1,59 @@
+{
+  "deliverable": "answer.json",
+  "graded_paths": [
+    "topological_order",
+    "state_scopes",
+    "final_plan",
+    "accepted",
+    "metrics.latency_ms",
+    "metrics.throughput",
+    "metrics.objective",
+    "passes_used"
+  ],
+  "tolerances": {
+    "metrics.latency_ms": 0.001,
+    "metrics.throughput": 0.001,
+    "metrics.objective": 0.001
+  },
+  "expected": {
+    "topological_order": [
+      "s1",
+      "s2",
+      "s3",
+      "s4",
+      "s5",
+      "s6"
+    ],
+    "state_scopes": [
+      {
+        "key": "kv",
+        "stages": [
+          "s3",
+          "s4"
+        ]
+      }
+    ],
+    "final_plan": [
+      "s1:move1",
+      "s2:shard2",
+      "s3:chunk2",
+      "s4:chunk2",
+      "s5:move1",
+      "s6:shard2"
+    ],
+    "accepted": [
+      "s1:move1",
+      "s2:shard2",
+      "s3:chunk2",
+      "s4:chunk2",
+      "s5:move1",
+      "s6:shard2"
+    ],
+    "metrics": {
+      "latency_ms": 112.6,
+      "throughput": 1000.0,
+      "objective": 12.6
+    },
+    "passes_used": 2
+  }
+}

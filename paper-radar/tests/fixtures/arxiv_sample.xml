@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:arxiv="http://arxiv.org/schemas/atom"
+      xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+  <opensearch:totalResults>2</opensearch:totalResults>
+  <entry>
+    <id>http://arxiv.org/abs/2610.29281v2</id>
+    <updated>2026-10-22T00:00:00Z</updated>
+    <published>2026-10-21T06:35:19Z</published>
+    <title>Flat-RLVR:  Sharpness-Aware
+      Reinforcement Learning</title>
+    <summary>We study RLVR.  It is   useful.</summary>
+    <author><name>Yeonbum Kim</name></author>
+    <author><name>Hyun Kyu Lee</name></author>
+    <arxiv:doi>10.1234/example</arxiv:doi>
+    <category term="cs.LG"/>
+    <category term="cs.AI"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.01244v1</id>
+    <updated>2026-09-01T13:44:21Z</updated>
+    <published>2026-09-01T13:44:21Z</published>
+    <title>Post-Training Science for Supervised Fine-Tuning</title>
+    <summary>We measure SFT choices.</summary>
+    <author><name>Charles O'Neill</name></author>
+    <category term="cs.LG"/>
+  </entry>
+</feed>

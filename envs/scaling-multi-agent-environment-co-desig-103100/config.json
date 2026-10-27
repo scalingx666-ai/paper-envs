@@ -1,0 +1,30 @@
+{
+  "num_obstacles": 6,
+  "min_gap": 8.0,
+  "step_size": 0.2,
+  "iterations": 30,
+  "critic_bandwidth": 8.0,
+  "beta_start": 0.0,
+  "beta_end": 0.6,
+  "global_pull": {"center": 45.0, "weight": 0.01},
+  "attractors": [
+    {"center": 15.0, "weight": 4.0, "sigma": 5.0},
+    {"center": 35.0, "weight": 3.0, "sigma": 6.0},
+    {"center": 55.0, "weight": 3.5, "sigma": 5.0},
+    {"center": 75.0, "weight": 4.0, "sigma": 4.0}
+  ],
+  "repellers": [
+    {"center": 25.0, "weight": 2.5, "sigma": 4.0},
+    {"center": 45.0, "weight": 3.0, "sigma": 5.0},
+    {"center": 65.0, "weight": 2.0, "sigma": 4.0}
+  ],
+  "critic_samples": [
+    {"position": 18.0, "gradient": 0.8, "weight": 1.0},
+    {"position": 30.0, "gradient": -0.6, "weight": 1.0},
+    {"position": 50.0, "gradient": 1.0, "weight": 1.5},
+    {"position": 70.0, "gradient": 0.4, "weight": 1.0},
+    {"position": 40.0, "gradient": 0.0, "weight": 0.5},
+    {"position": 60.0, "gradient": -0.2, "weight": 0.0}
+  ],
+  "initial_positions": [8.0, 16.0, 24.0, 32.0, 40.0, 48.0]
+}

@@ -1,0 +1,43 @@
+{
+  "deliverable": "answer.json",
+  "graded_paths": [
+    "genuine_runs",
+    "genuine_rate",
+    "beyond_tuning_runs",
+    "beyond_tuning_rate",
+    "tuning_overfit_runs",
+    "top_run",
+    "top_final_holdout",
+    "mean_exploration_gain_genuine"
+  ],
+  "tolerances": {
+    "genuine_rate": 0.001,
+    "beyond_tuning_rate": 0.001,
+    "top_final_holdout": 0.001,
+    "mean_exploration_gain_genuine": 0.001
+  },
+  "expected": {
+    "beyond_tuning_rate": 0.667,
+    "beyond_tuning_runs": [
+      "R01",
+      "R02",
+      "R03",
+      "R08"
+    ],
+    "genuine_rate": 0.6,
+    "genuine_runs": [
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R08",
+      "R09"
+    ],
+    "mean_exploration_gain_genuine": 14.667,
+    "top_final_holdout": 0.74,
+    "top_run": "R01",
+    "tuning_overfit_runs": [
+      "R06"
+    ]
+  }
+}

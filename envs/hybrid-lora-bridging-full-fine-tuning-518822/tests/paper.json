@@ -1,0 +1,25 @@
+{
+  "arxiv_id": "arxiv:2605.18822",
+  "arxiv_base": "2605.18822",
+  "title": "Hybrid-LoRA: Bridging Full Fine-Tuning and Low-Rank Adaptation for Post-Training",
+  "abstract": "Post-training has become essential for adapting large language models (LLMs) to complex downstream behaviors, including instruction following, preference alignment, and multi-step reasoning. Reinforcement learning with verifiable rewards (RLVR) has recently emerged as a particularly effective post-training paradigm for improving reasoning capabilities, with critic-free algorithms such as GRPO and GSPO enabling scalable optimization. However, RLVR post-training with full fine-tuning (FFT) requires substantial GPU memory and incurs high training costs. Although parameter-efficient fine-tuning (PEFT) methods, such as Low-Rank Adaptation (LoRA), effectively reduce computational costs, they often suffer from a noticeable performance gap compared to full fine-tuning in post-training for complex reasoning tasks. In this paper, we propose Hybrid-LoRA, an efficient hybrid post-training framework that selectively applies full fine-tuning to a small subset of modules less suited to low-rank adaptation, while adapting the remaining components with LoRA. We introduce a novel Hybrid-LoRA Score to rank candidate modules according to their sensitivity to low-rank adaptation under a fixed parameter budget. Experiments show that Hybrid-LoRA closely matches full fine-tuning performance under a 10% full fine-tuning module budget, with the remaining candidate modules adapted by LoRA, consistently outperforming four state-of-the-art PEFT post-training baselines, achieving improvements of up to 5.65% and on average 4.36% over the best baseline.",
+  "authors": [
+    "Chengqian Zhang",
+    "Wei Zhu",
+    "Kyumin Lee"
+  ],
+  "topic": "post-training",
+  "topic_name": "后训练 / Post-training",
+  "topics": [
+    "post-training"
+  ],
+  "score": 15,
+  "url": "https://arxiv.org/abs/2605.18822v1",
+  "published": "2026-05-12",
+  "updated": "2026-05-12",
+  "categories": [
+    "cs.LG",
+    "cs.AI"
+  ],
+  "slug": "hybrid-lora-bridging-full-fine-tuning-518822"
+}

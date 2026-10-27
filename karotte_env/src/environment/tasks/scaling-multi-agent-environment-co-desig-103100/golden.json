@@ -1,0 +1,28 @@
+{
+  "deliverable": "answer.json",
+  "graded_paths": [
+    "positions.0",
+    "positions.1",
+    "positions.2",
+    "positions.3",
+    "positions.4",
+    "positions.5",
+    "reward",
+    "min_gap",
+    "projection_merges"
+  ],
+  "tolerances": {},
+  "expected": {
+    "min_gap": 8.0,
+    "positions": [
+      9.912443,
+      17.912443,
+      25.912443,
+      33.912443,
+      41.912443,
+      51.945038
+    ],
+    "projection_merges": 120,
+    "reward": -17.449841
+  }
+}

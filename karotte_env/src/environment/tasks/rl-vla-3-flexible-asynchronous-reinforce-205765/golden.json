@@ -1,0 +1,27 @@
+{
+  "deliverable": "answer.json",
+  "graded_paths": [
+    "async_makespan",
+    "sync_makespan",
+    "speedup",
+    "inference_batches",
+    "train_batches",
+    "avg_inference_batch_size",
+    "env_finish_times"
+  ],
+  "tolerances": {},
+  "expected": {
+    "async_makespan": 78,
+    "avg_inference_batch_size": 2.0,
+    "env_finish_times": [
+      56,
+      70,
+      61,
+      62
+    ],
+    "inference_batches": 8,
+    "speedup": 1.5256,
+    "sync_makespan": 119,
+    "train_batches": 3
+  }
+}

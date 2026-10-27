@@ -1,0 +1,147 @@
+{
+  "slug": "rl-vla-3-flexible-asynchronous-reinforce-205765",
+  "arxiv_id": "arxiv:2602.05765",
+  "topic": "rl-infra",
+  "task_title": "Asynchronous Rollout-Segment Scheduler",
+  "one_liner": "Implement a deterministic discrete-event scheduler for batched policy inference and minibatch training with asynchronous environment shards, then compare its makespan to a synchronous round baseline.",
+  "difficulty": "medium",
+  "estimated_minutes": 35,
+  "paper_concepts": [
+    "fully asynchronous RL pipeline",
+    "dynamic batching scheduler",
+    "environment sharding",
+    "variable simulator latency",
+    "overlap of rollout, inference, and training",
+    "sample-equivalent scheduling"
+  ],
+  "deliverable": {
+    "path": "answer.json",
+    "format": "json",
+    "schema": "JSON object with keys: async_makespan (integer, example 123), sync_makespan (integer, example 150), speedup (number rounded to 4 decimals, example 1.2195), inference_batches (integer, example 7), train_batches (integer, example 3), avg_inference_batch_size (number rounded to 4 decimals, example 2.2857), env_finish_times (list of ints, example [10,20,30,40]). Extra keys allowed."
+  },
+  "graded_paths": [
+    "async_makespan",
+    "sync_makespan",
+    "speedup",
+    "inference_batches",
+    "train_batches",
+    "avg_inference_batch_size",
+    "env_finish_times"
+  ],
+  "tolerances": {},
+  "design_rationale": "This slice captures the paper's systems mechanism without requiring the full distributed framework: independent environment shards generate variable-duration rollout segments, a dynamic batching inference server overlaps with simulation, and a trainer consumes completed segments in minibatches while never waiting for all envs to synchronize. The synchronous baseline is a lockstep round model using the same latency and service-time functions. The fixture includes a zero-latency simulator step, simultaneous completions, non-identical segment durations, and a final partial training batch, so the solver must implement the event ordering and batching rules rather than aggregate supplied columns. Integer time units keep the graded values exact.",
+  "verification_notes": "Reference solution was checked by hand and by running the script. Expected answer.json values are: async_makespan 78, sync_makespan 119, speedup 1.5256, inference_batches 8, train_batches 3, avg_inference_batch_size 2.0, env_finish_times [56, 70, 61, 62]. The final training batch is a partial batch of size 4, exercising the flush rule. The zero-latency step on env 3 still produces a positive segment duration because segment 0 sums two step latencies. All times are integer-valued, and the two rounded floats are compared exactly after Python round(x, 4).",
+  "starter_files": [
+    "config.json",
+    "latencies.csv"
+  ],
+  "generated_at": "2026-10-27T02:41:57Z",
+  "validation": {
+    "ok": true,
+    "problems": [],
+    "static": "ok",
+    "checks": 7,
+    "positive_reward": 1.0,
+    "negative_reward": 0.0,
+    "reference_runs": 2
+  },
+  "critic": {
+    "score": 8.0,
+    "verdict": "accept",
+    "paper_fidelity": 9,
+    "clarity": 8,
+    "verifier_strength": 7,
+    "strengths": [
+      "Directly operationalizes the paper's core scheduling idea: asynchronous environment shards, batched inference, minibatch training, and comparison against a synchronous lockstep baseline.",
+      "The instruction is detailed and self-contained, including service-time formulas, queue behavior, batching rules, sync baseline construction, required metrics, and rounding.",
+      "The fixture is small but non-trivial; correct answer requires implementing the full event-driven simulation rather than copying starter data.",
+      "The expected values exercise meaningful behaviors: asynchronous batching, FIFO queueing, env finish times, and a final partial training batch.",
+      "Reference output appears consistent with the stated rules and verification notes."
+    ],
+    "issues": [
+      "Only one fixture is graded, so a solver that computes and hard-codes the seven expected values would pass; more hidden fixtures would make the verifier stronger.",
+      "Tie-breaking for simultaneous simulation completions across different inference batches is somewhat terse; the reference resolves via service/event order, but this could be stated more explicitly.",
+      "The reference sorts latency rows by `(step_index, latency)`, while the spec says sort by `step_index`; this is harmless for the provided fixture where step indices are unique, but duplicate step indices would be ambiguous.",
+      "The relative processing order of simultaneous simulation, inference, and training completion events is not fully specified. The reference's event-type ordering does not appear to affect this fixture, but the rule could be made explicit.",
+      "Exact comparison with no tolerance is acceptable here because values are deterministic and mostly integral, but it leaves little room for harmless float/type formatting differences."
+    ],
+    "suggestions": [
+      "Add at least one hidden fixture with different `env_count`, `chunk_steps`, batch limits, empty envs, and zero-duration segments to prevent hard-coding and test edge cases.",
+      "Clarify the event-processing order when simulation, inference, and training completions share a timestamp, especially for zero-duration segments that create new completion events at the same time.",
+      "Specify tie-breaking for duplicate `step_index` values in `latencies.csv`.",
+      "Consider including a small worked example or pseudocode for the event loop, independent of the graded fixture."
+    ]
+  },
+  "critiques": [
+    {
+      "score": 8.0,
+      "verdict": "accept",
+      "paper_fidelity": 9,
+      "clarity": 8,
+      "verifier_strength": 7,
+      "strengths": [
+        "Directly operationalizes the paper's core scheduling idea: asynchronous environment shards, batched inference, minibatch training, and comparison against a synchronous lockstep baseline.",
+        "The instruction is detailed and self-contained, including service-time formulas, queue behavior, batching rules, sync baseline construction, required metrics, and rounding.",
+        "The fixture is small but non-trivial; correct answer requires implementing the full event-driven simulation rather than copying starter data.",
+        "The expected values exercise meaningful behaviors: asynchronous batching, FIFO queueing, env finish times, and a final partial training batch.",
+        "Reference output appears consistent with the stated rules and verification notes."
+      ],
+      "issues": [
+        "Only one fixture is graded, so a solver that computes and hard-codes the seven expected values would pass; more hidden fixtures would make the verifier stronger.",
+        "Tie-breaking for simultaneous simulation completions across different inference batches is somewhat terse; the reference resolves via service/event order, but this could be stated more explicitly.",
+        "The reference sorts latency rows by `(step_index, latency)`, while the spec says sort by `step_index`; this is harmless for the provided fixture where step indices are unique, but duplicate step indices would be ambiguous.",
+        "The relative processing order of simultaneous simulation, inference, and training completion events is not fully specified. The reference's event-type ordering does not appear to affect this fixture, but the rule could be made explicit.",
+        "Exact comparison with no tolerance is acceptable here because values are deterministic and mostly integral, but it leaves little room for harmless float/type formatting differences."
+      ],
+      "suggestions": [
+        "Add at least one hidden fixture with different `env_count`, `chunk_steps`, batch limits, empty envs, and zero-duration segments to prevent hard-coding and test edge cases.",
+        "Clarify the event-processing order when simulation, inference, and training completions share a timestamp, especially for zero-duration segments that create new completion events at the same time.",
+        "Specify tie-breaking for duplicate `step_index` values in `latencies.csv`.",
+        "Consider including a small worked example or pseudocode for the event loop, independent of the graded fixture."
+      ]
+    }
+  ],
+  "mcode": {
+    "status": "succeeded",
+    "reward": 1.0,
+    "verifier": {
+      "reward": 1.0,
+      "error": null,
+      "elapsed": 0.04,
+      "stdout": "reward=1.0000 checks=7/7\n"
+    },
+    "elapsed": 136.1,
+    "duration_ms": 134965,
+    "model": {
+      "providerId": "custom_provider:tierflow",
+      "modelId": "tierflow_pro",
+      "variant": "thinking",
+      "providerSource": "custom_provider",
+      "providerKind": "custom",
+      "protocol": "openai-completions"
+    },
+    "usage": {
+      "inputTokens": 65462,
+      "outputTokens": 14416,
+      "cacheReadTokens": 218624,
+      "totalTokens": 79878
+    },
+    "run_id": "exec_turn_mvq3stdn_k4mtwt",
+    "session_id": "mvs_8acb58da51dc42a381b71ad040f35d2f",
+    "error": null,
+    "output": "`answer.json` is written: async makespan 78, sync makespan 119, speedup 1.5256, 8 inference / 3 training batches, avg inference batch 2.0, env finish times [56, 70, 61, 62] — the event-heap simulator and an independent unit-clock reimplementation agree exactly.\n\n<deliver-assets>\n<media type=\"file\" src=\"/private/var/folders/0t/g5670dnx5xx6wz3v0wjhdrdh0000gn/T/paper-env-solve-03emcuwv/workspace/answer.json\" caption=\"Simulation metrics for the asynchronous rollout-segment scheduler\" />\n</deliver-assets>",
+    "answer_excerpt": "`answer.json` is written: async makespan 78, sync makespan 119, speedup 1.5256, 8 inference / 3 training batches, avg inference batch 2.0, env finish times [56, 70, 61, 62] — the event-heap simulator and an independent unit-clock reimplementation agree exactly.\n\n<deliver-assets>\n<media type=\"file\" src=\"/private/var/folders/0t/g5670dnx5xx6wz3v0wjhdrdh0000gn/T/paper-env-solve-03emcuwv/workspace/answer.json\" caption=\"Simulation metrics for the asynchronous rollout-segment scheduler\" />\n</deliver-assets>",
+    "workspace": "runs/mcode-sbx-rl-vla-3-flexible-asynchronous-reinforce-205765/workspace",
+    "deliverable_written": true,
+    "sandboxed": true
+  },
+  "timings": {
+    "plan_s": 269.5,
+    "build_validate_s": 0.1,
+    "critic_s": 100.2
+  },
+  "model": {
+    "name": "tierflow_pro",
+    "effort": "max"
+  }
+}

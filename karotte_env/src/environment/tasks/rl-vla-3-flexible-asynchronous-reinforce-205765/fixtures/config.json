@@ -1,0 +1,10 @@
+{
+  "env_count": 4,
+  "chunk_steps": 2,
+  "max_inference_batch": 6,
+  "inference_base": 3,
+  "inference_per_item": 2,
+  "max_train_batch": 6,
+  "train_base": 4,
+  "train_per_item": 1
+}

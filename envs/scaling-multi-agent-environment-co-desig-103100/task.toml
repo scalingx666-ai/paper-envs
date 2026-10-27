@@ -1,0 +1,19 @@
+[tool]
+id = "scaling-multi-agent-environment-co-desig-103100"
+name = "Projected Guidance for 1-D Corridor Obstacle Placement"
+description = "Simulate a deterministic projected-guidance sampler that places obstacles under a hard minimum-separation constraint while blending a dense critic field."
+tags = ["paper-env", "agent-environment", "arxiv:2511.03100"]
+
+[task]
+id = "scaling-multi-agent-environment-co-desig-103100"
+
+[resources]
+cpus = 1
+memory_mb = 1024
+
+[agent]
+type = "react"
+
+[verifier]
+script = "tests/test.sh"
+rule = "reward_txt"

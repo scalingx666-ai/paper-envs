@@ -1,0 +1,40 @@
+{
+  "arxiv_id": "arxiv:2610.09426",
+  "arxiv_base": "2610.09426",
+  "title": "RSI-Forge: From Research Papers to Environments for Recursive Self-Improvement",
+  "abstract": "Environments are the foundation of recursive self-improvement: they provide the problems agents work on and the feedback used to evaluate progress. Yet constructing challenging research environments with reliable evaluation still depends on domain experts, limiting their scale and disciplinary coverage. We introduce RSI-Forge, a multi-agent pipeline that turns published papers into executable environments for self-improvement. Three agents coordinate construction, reproduction, and review to produce tasks with automated evaluators; each paper's method is independently reimplemented to establish a baseline score. We present 210 environments across 18 fields, including 90 reviewed by independent human domain experts. Both experts and agent judges give high ratings to the potential for improving the provided starting solutions and the evaluators' ability to distinguish solution quality, whereas experts are more critical of shortcut resistance, faithfulness to the source paper, and whether a single idea can exhaust a task. To validate their use for repeated improvement, we evaluate four models over 3 successive attempts on 120 environments, with each attempt inheriting prior code and notes while model weights remain fixed. At least one model improves after the first attempt in 84% of environments. Models also outperform the reproduced paper methods in 68 of the 120 environments, demonstrating room for gains beyond these baselines. Transcript analysis identifies work beyond parameter tuning in 95% of these successful attempts. Analysis of the resulting trajectories shows that models scoring lower on these tasks explore less, more often accept gains smaller than the reported standard error, and rely more heavily on tuning to the development set. RSI-Forge provides a scalable approach to constructing research environments for training and evaluating self-improving agents.",
+  "authors": [
+    "Renxiong Wang",
+    "Darvin Yi",
+    "Abril Herrlein",
+    "Anas Mahmoud",
+    "Advait Gosai",
+    "Lisiman Hua",
+    "MohammadHossein Rezaei",
+    "Xingang Guo",
+    "Anisha Gunjal",
+    "Utkarsh Tyagi",
+    "David J. Lee",
+    "Minglai Yang",
+    "Haris Riaz",
+    "Chenguang Wang",
+    "Huaxiu Yao",
+    "Daniel Yue Zhang",
+    "Aakash Sabharwal",
+    "Tong Zhao",
+    "Yunzhong He"
+  ],
+  "topic": "rsi",
+  "topic_name": "RSI / 递归自我改进",
+  "topics": [
+    "rsi"
+  ],
+  "score": 14,
+  "url": "https://arxiv.org/abs/2610.09426v1",
+  "published": "2026-10-07",
+  "updated": "2026-10-07",
+  "categories": [
+    "cs.AI"
+  ],
+  "slug": "rsi-forge-research-papers-environments-r-009426"
+}

@@ -1,0 +1,5 @@
+{
+  "capacities": [1, 2, 3, 4, 5, 8],
+  "target_hit_rate": 0.6875,
+  "stretch_target_hit_rate": 0.8
+}

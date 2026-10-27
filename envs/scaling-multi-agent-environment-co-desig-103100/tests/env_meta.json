@@ -1,0 +1,142 @@
+{
+  "slug": "scaling-multi-agent-environment-co-desig-103100",
+  "arxiv_id": "arxiv:2511.03100",
+  "topic": "agent-environment",
+  "task_title": "Projected Guidance for 1-D Corridor Obstacle Placement",
+  "one_liner": "Simulate a deterministic projected-guidance sampler that places obstacles under a hard minimum-separation constraint while blending a dense critic field.",
+  "difficulty": "medium",
+  "estimated_minutes": 35,
+  "paper_concepts": [
+    "agent-environment co-design",
+    "Projected Universal Guidance",
+    "hard constraints",
+    "critic distillation",
+    "diffusion sampling",
+    "projected gradient ascent"
+  ],
+  "deliverable": {
+    "path": "answer.json",
+    "format": "json",
+    "schema": "JSON object with fields positions (list of K floats rounded to 6 decimals), reward (float rounded to 6 decimals), min_gap (float rounded to 6 decimals), projection_merges (integer). Example: {'positions': [10.123456, 20.0, 30.0, 40.0, 50.0, 60.0], 'reward': 12.345678, 'min_gap': 8.0, 'projection_merges': 17}. Extra keys allowed."
+  },
+  "graded_paths": [
+    "positions.0",
+    "positions.1",
+    "positions.2",
+    "positions.3",
+    "positions.4",
+    "positions.5",
+    "reward",
+    "min_gap",
+    "projection_merges"
+  ],
+  "tolerances": {},
+  "design_rationale": "The task isolates the paper's two core mechanisms in a small deterministic setting. A reward density supplies the environment objective, a dense kernel-weighted critic field supplies the distilled value signal, and PAVA projection enforces the hard minimum-separation constraint exactly. The initial positions sit exactly at the minimum gap, repellers create negative reward deltas, and one critic sample has zero weight, so the solver must handle boundary feasibility, negative guidance, and zero-weight evidence. The output depends on implementing gradient evaluation, kernel normalization, the beta schedule, simultaneous updates, and the projection merge count.",
+  "verification_notes": "Reference solution reads config.json, runs 30 deterministic iterations, and writes answer.json with values rounded to 6 decimals. It uses only json and math. PAVA merges only when the previous block mean is strictly greater than the last block mean, so equal means remain separate. There is no randomness or external data. Runtime is well under one second. The script was checked to emit the four required fields and to keep final consecutive gaps at least min_gap before rounding.",
+  "starter_files": [
+    "config.json"
+  ],
+  "generated_at": "2026-10-27T02:40:43Z",
+  "validation": {
+    "ok": true,
+    "problems": [],
+    "static": "ok",
+    "checks": 9,
+    "positive_reward": 1.0,
+    "negative_reward": 0.0,
+    "reference_runs": 2
+  },
+  "critic": {
+    "score": 7.0,
+    "verdict": "revise",
+    "paper_fidelity": 6,
+    "clarity": 8,
+    "verifier_strength": 7,
+    "strengths": [
+      "Provides a complete, deterministic algorithm with a self-contained config fixture; no hidden data or network access is required.",
+      "Exercises the paper's hard-constraint projection idea via exact PAVA and blends a dense critic field with reward gradients.",
+      "Graded paths cover all final positions, reward, achieved min gap, and projection-merge count, so a correct implementation must reproduce the full trajectory effect."
+    ],
+    "issues": [
+      "Paper fidelity is only partial: there is no diffusion sampling, universal guidance, or learned critic distillation; it is a reduced gradient-ascent/PAVA toy inspired by PUG.",
+      "Exact comparison after rounding leaves an ambiguity about whether reward and min_gap use the unrounded final x or the rounded positions; the reference uses unrounded x, and a reasonable alternative could fail.",
+      "No tolerance and unspecified floating-point summation order make the exact check somewhat brittle, even with 6-decimal rounding.",
+      "Only one config/fixture is checked, so the verifier does not test generalization across configs and would accept a hardcoded answer for that fixture if leaked."
+    ],
+    "suggestions": [
+      "State explicitly that reward and min_gap are computed from the unrounded final x, before writing rounded positions.",
+      "Specify summation order for attractors, repellers, and critic samples, or allow a small tolerance around expected values to avoid floating-point brittleness.",
+      "Consider adding a second hidden config or parameterized variant to reduce hardcoding and test the mechanism more generally.",
+      "If paper fidelity is important, add at least a conceptual link to diffusion guidance or critic distillation, or clarify that this is an isolated projection/guidance component test."
+    ]
+  },
+  "critiques": [
+    {
+      "score": 7.0,
+      "verdict": "revise",
+      "paper_fidelity": 6,
+      "clarity": 8,
+      "verifier_strength": 7,
+      "strengths": [
+        "Provides a complete, deterministic algorithm with a self-contained config fixture; no hidden data or network access is required.",
+        "Exercises the paper's hard-constraint projection idea via exact PAVA and blends a dense critic field with reward gradients.",
+        "Graded paths cover all final positions, reward, achieved min gap, and projection-merge count, so a correct implementation must reproduce the full trajectory effect."
+      ],
+      "issues": [
+        "Paper fidelity is only partial: there is no diffusion sampling, universal guidance, or learned critic distillation; it is a reduced gradient-ascent/PAVA toy inspired by PUG.",
+        "Exact comparison after rounding leaves an ambiguity about whether reward and min_gap use the unrounded final x or the rounded positions; the reference uses unrounded x, and a reasonable alternative could fail.",
+        "No tolerance and unspecified floating-point summation order make the exact check somewhat brittle, even with 6-decimal rounding.",
+        "Only one config/fixture is checked, so the verifier does not test generalization across configs and would accept a hardcoded answer for that fixture if leaked."
+      ],
+      "suggestions": [
+        "State explicitly that reward and min_gap are computed from the unrounded final x, before writing rounded positions.",
+        "Specify summation order for attractors, repellers, and critic samples, or allow a small tolerance around expected values to avoid floating-point brittleness.",
+        "Consider adding a second hidden config or parameterized variant to reduce hardcoding and test the mechanism more generally.",
+        "If paper fidelity is important, add at least a conceptual link to diffusion guidance or critic distillation, or clarify that this is an isolated projection/guidance component test."
+      ]
+    }
+  ],
+  "mcode": {
+    "status": "succeeded",
+    "reward": 1.0,
+    "verifier": {
+      "reward": 1.0,
+      "error": null,
+      "elapsed": 0.05,
+      "stdout": "reward=1.0000 checks=9/9\n"
+    },
+    "elapsed": 56.2,
+    "duration_ms": 49720,
+    "model": {
+      "providerId": "custom_provider:tierflow",
+      "modelId": "tierflow_pro",
+      "variant": "thinking",
+      "providerSource": "custom_provider",
+      "providerKind": "custom",
+      "protocol": "openai-completions"
+    },
+    "usage": {
+      "inputTokens": 49288,
+      "outputTokens": 3844,
+      "cacheReadTokens": 75648,
+      "totalTokens": 53132
+    },
+    "run_id": "exec_turn_mvq3rlxw_hag71i",
+    "session_id": "mvs_6234e87c2103474a9228bb0ccb6dcc46",
+    "error": null,
+    "output": "Wrote `answer.json` — positions `[9.912443, 17.912443, 25.912443, 33.912443, 41.912443, 51.945038]`, reward `-17.449841`, min_gap `8.0`, projection_merges `120`. The result was cross-checked with an independent max-min isotonic formulation (identical output) and the analytic derivative matched a numeric one.\n\n<deliver-assets>\n<media type=\"file\" src=\"/private/var/folders/0t/g5670dnx5xx6wz3v0wjhdrdh0000gn/T/paper-env-solve-6gm4xlf5/workspace/answer.json\" caption=\"answer.json\" />\n</deliver-assets>",
+    "answer_excerpt": "Wrote `answer.json` — positions `[9.912443, 17.912443, 25.912443, 33.912443, 41.912443, 51.945038]`, reward `-17.449841`, min_gap `8.0`, projection_merges `120`. The result was cross-checked with an independent max-min isotonic formulation (identical output) and the analytic derivative matched a numeric one.\n\n<deliver-assets>\n<media type=\"file\" src=\"/private/var/folders/0t/g5670dnx5xx6wz3v0wjhdrdh0000gn/T/paper-env-solve-6gm4xlf5/workspace/answer.json\" caption=\"answer.json\" />\n</deliver-assets>",
+    "workspace": "runs/mcode-sbx-scaling-multi-agent-environment-co-desig-103100/workspace",
+    "deliverable_written": true,
+    "sandboxed": true
+  },
+  "timings": {
+    "plan_s": 196.3,
+    "build_validate_s": 0.2,
+    "critic_s": 55.3
+  },
+  "model": {
+    "name": "tierflow_pro",
+    "effort": "max"
+  }
+}

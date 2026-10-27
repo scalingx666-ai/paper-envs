@@ -1,0 +1,19 @@
+[tool]
+id = "rl-vla-3-flexible-asynchronous-reinforce-205765"
+name = "Asynchronous Rollout-Segment Scheduler"
+description = "Implement a deterministic discrete-event scheduler for batched policy inference and minibatch training with asynchronous environment shards, then compare its makespan to a synchronous round baseline."
+tags = ["paper-env", "rl-infra", "arxiv:2602.05765"]
+
+[task]
+id = "rl-vla-3-flexible-asynchronous-reinforce-205765"
+
+[resources]
+cpus = 1
+memory_mb = 1024
+
+[agent]
+type = "react"
+
+[verifier]
+script = "tests/test.sh"
+rule = "reward_txt"

@@ -1,0 +1,37 @@
+{
+  "arxiv_id": "arxiv:2602.05765",
+  "arxiv_base": "2602.05765",
+  "title": "RL-VLA$^3$: A Flexible and Asynchronous Reinforcement Learning Framework for VLA Training",
+  "abstract": "Reinforcement learning (RL) has emerged as a critical paradigm for post-training Vision-Language-Action (VLA) models, enabling embodied agents to adapt and improve through environmental interaction. However, existing RL frameworks for VLAs inherit synchronous design principles from traditional LLM training, treating entire rollouts as indivisible units and alternating strictly between data collection and policy optimization. This fundamentally mismatches the unique characteristics of VLA training, as physical simulators introduce highly variable, resource-intensive latencies. To address this, we introduce RL-VLA$^3$, a fully asynchronous distributed RL framework that enables fine-grained asynchronous interaction between simulation, inference, and training components through dynamic batching schedulers and flexible environment sharding strategies. Extensive experiments across diverse simulation backends, VLA architectures, and RL algorithms demonstrate that RL-VLA$^3$ achieves throughput improvements of up to 85.2\\% over synchronous baselines while maintaining identical sample efficiency, with scalability validated from 8 to 256 GPUs. To our knowledge, RL-VLA$^3$ is the first fully asynchronous RL training framework tailored specifically for the system-level challenges of VLA training.",
+  "authors": [
+    "Haoran Sun",
+    "Yongjian Guo",
+    "Zhong Guan",
+    "Shuai Di",
+    "Xiaodong Bai",
+    "Jing Long",
+    "Tianyun Zhao",
+    "Mingxi Luo",
+    "Hongke Zhao",
+    "Likang Wu",
+    "Xiaotie Deng",
+    "Xu Chu",
+    "Xi Xiao",
+    "Sheng Wen",
+    "Yicheng Gong",
+    "Junwu Xiong"
+  ],
+  "topic": "rl-infra",
+  "topic_name": "RL Infra / 强化学习基础设施",
+  "topics": [
+    "rl-infra"
+  ],
+  "score": 11,
+  "url": "https://arxiv.org/abs/2602.05765v3",
+  "published": "2026-02-05",
+  "updated": "2026-09-04",
+  "categories": [
+    "cs.AI"
+  ],
+  "slug": "rl-vla-3-flexible-asynchronous-reinforce-205765"
+}

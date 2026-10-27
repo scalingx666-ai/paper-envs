@@ -1,0 +1,145 @@
+{
+  "slug": "hybrid-lora-bridging-full-fine-tuning-518822",
+  "arxiv_id": "arxiv:2605.18822",
+  "topic": "post-training",
+  "task_title": "Hybrid-LoRA Module Budget Selector",
+  "one_liner": "Implement the Hybrid-LoRA score and an exact 0/1 knapsack selector under a 10% full-fine-tuning parameter budget.",
+  "difficulty": "medium",
+  "estimated_minutes": 35,
+  "paper_concepts": [
+    "Hybrid-LoRA Score",
+    "parameter-efficient fine-tuning",
+    "LoRA parameter count",
+    "full fine-tuning budget",
+    "module selection",
+    "0/1 knapsack"
+  ],
+  "deliverable": {
+    "path": "answer.json",
+    "format": "json",
+    "schema": "JSON object with keys budget (int), ranking (list of strings), selected_modules (list of strings), budget_used (int), baseline_lora_gain (int), hybrid_gain (int), improvement (int), top_score (float rounded to 6 decimals). Example: {'budget': 1234, 'ranking': ['module_a', 'module_b'], 'selected_modules': ['module_a'], 'budget_used': 1000, 'baseline_lora_gain': 500, 'hybrid_gain': 530, 'improvement': 30, 'top_score': 0.012345}. Extra keys allowed."
+  },
+  "graded_paths": [
+    "budget",
+    "ranking",
+    "selected_modules",
+    "budget_used",
+    "baseline_lora_gain",
+    "hybrid_gain",
+    "improvement",
+    "top_score"
+  ],
+  "tolerances": {},
+  "design_rationale": "The environment isolates the hybrid module-selection mechanism: derive LoRA and FFT parameter counts, compute a marginal gain per extra FFT parameter, then solve the resulting budgeted subset choice exactly. The fixture includes negative and zero deltas, exact score ties, and a selection tie. The optimal subset is not simply the top-ranked module: two attention modules beat one higher-ranked MLP module under the same 8192-parameter budget. This forces the solver to implement both scoring and exact 0/1 knapsack with tie-breaking rather than transcribing a supplied table.",
+  "verification_notes": "Reference output for the supplied fixture: budget=8192, ranking=[attn_v, mlp_up, attn_k, attn_q, attn_q3, mlp_down3, mlp_gate2, mlp_down, attn_o, mlp_gate, mlp_down2, mlp_up2, attn_q2], selected_modules=[attn_k, attn_v], budget_used=8192, baseline_lora_gain=1310, hybrid_gain=1460, improvement=150, top_score=0.025112. Total FFT parameters are 81920, so the 10% budget is 8192. The optimal subset is tied between {attn_k, attn_v} and {attn_q, attn_v}; the lexicographic tie-break selects attn_k. All graded fields except top_score are exact integers or string lists; top_score is exact after rounding to 6 decimals.",
+  "starter_files": [
+    "modules.csv"
+  ],
+  "generated_at": "2026-10-27T02:40:14Z",
+  "validation": {
+    "ok": true,
+    "problems": [],
+    "static": "ok",
+    "checks": 8,
+    "positive_reward": 1.0,
+    "negative_reward": 0.0,
+    "reference_runs": 2
+  },
+  "critic": {
+    "score": 7.0,
+    "verdict": "revise",
+    "paper_fidelity": 7,
+    "clarity": 9,
+    "verifier_strength": 6,
+    "strengths": [
+      "Instruction fully specifies the formulas, budget, objective, and tie-breaking, so the expected answer is well-defined.",
+      "The reference output is internally consistent: budget=8192, selected={attn_k, attn_v}, improvement=150, top_score=0.025112.",
+      "The task is not solvable by copying starter data; it requires computing LoRA/FFT costs, scores, rankings, and a budgeted selection.",
+      "Multiple exact graded fields jointly validate the computation, making accidental success unlikely.",
+      "The Hybrid-LoRA score delta/extra is a plausible operationalization of sensitivity to low-rank adaptation under a parameter budget."
+    ],
+    "issues": [
+      "The single fixture does not distinguish the specified exact 0/1 knapsack rule from a simpler score-greedy selection: greedy by score yields the same selected set on this CSV, so the core 'exact knapsack' requirement is not actually tested.",
+      "The paper describes ranking candidate modules by the Hybrid-LoRA score under a budget; the task instead maximizes total delta with exact knapsack, which may be a different mechanism from the paper's selection procedure.",
+      "The verifier only checks output values, so a hard-coded answer would pass if a solver somehow inferred the reference output; there is no held-out fixture or perturbation.",
+      "The phrase 'rounded to exactly 6 decimal places' is not enforceable as a JSON number with trailing zeros; it is only enforceable as numerical rounding, which the instruction somewhat conflates."
+    ],
+    "suggestions": [
+      "Add a second fixture where score-greedy and exact knapsack select different subsets, or replace the exact knapsack rule with the paper's actual score-based selection rule.",
+      "If the intended mechanism is score ranking followed by budgeted selection, make that explicit and remove the conflicting exact-knapsack objective.",
+      "Specify top_score as a rounded numeric value rather than 'exactly 6 decimal places' to avoid JSON trailing-zero ambiguity.",
+      "Add a small hidden variant or re-run with modified gains/costs so the verifier checks the algorithm rather than one fixed answer."
+    ]
+  },
+  "critiques": [
+    {
+      "score": 7.0,
+      "verdict": "revise",
+      "paper_fidelity": 7,
+      "clarity": 9,
+      "verifier_strength": 6,
+      "strengths": [
+        "Instruction fully specifies the formulas, budget, objective, and tie-breaking, so the expected answer is well-defined.",
+        "The reference output is internally consistent: budget=8192, selected={attn_k, attn_v}, improvement=150, top_score=0.025112.",
+        "The task is not solvable by copying starter data; it requires computing LoRA/FFT costs, scores, rankings, and a budgeted selection.",
+        "Multiple exact graded fields jointly validate the computation, making accidental success unlikely.",
+        "The Hybrid-LoRA score delta/extra is a plausible operationalization of sensitivity to low-rank adaptation under a parameter budget."
+      ],
+      "issues": [
+        "The single fixture does not distinguish the specified exact 0/1 knapsack rule from a simpler score-greedy selection: greedy by score yields the same selected set on this CSV, so the core 'exact knapsack' requirement is not actually tested.",
+        "The paper describes ranking candidate modules by the Hybrid-LoRA score under a budget; the task instead maximizes total delta with exact knapsack, which may be a different mechanism from the paper's selection procedure.",
+        "The verifier only checks output values, so a hard-coded answer would pass if a solver somehow inferred the reference output; there is no held-out fixture or perturbation.",
+        "The phrase 'rounded to exactly 6 decimal places' is not enforceable as a JSON number with trailing zeros; it is only enforceable as numerical rounding, which the instruction somewhat conflates."
+      ],
+      "suggestions": [
+        "Add a second fixture where score-greedy and exact knapsack select different subsets, or replace the exact knapsack rule with the paper's actual score-based selection rule.",
+        "If the intended mechanism is score ranking followed by budgeted selection, make that explicit and remove the conflicting exact-knapsack objective.",
+        "Specify top_score as a rounded numeric value rather than 'exactly 6 decimal places' to avoid JSON trailing-zero ambiguity.",
+        "Add a small hidden variant or re-run with modified gains/costs so the verifier checks the algorithm rather than one fixed answer."
+      ]
+    }
+  ],
+  "mcode": {
+    "status": "succeeded",
+    "reward": 1.0,
+    "verifier": {
+      "reward": 1.0,
+      "error": null,
+      "elapsed": 0.05,
+      "stdout": "reward=1.0000 checks=8/8\n"
+    },
+    "elapsed": 24.6,
+    "duration_ms": 21907,
+    "model": {
+      "providerId": "custom_provider:tierflow",
+      "modelId": "tierflow_pro",
+      "variant": "thinking",
+      "providerSource": "custom_provider",
+      "providerKind": "custom",
+      "protocol": "openai-completions"
+    },
+    "usage": {
+      "inputTokens": 17896,
+      "outputTokens": 2146,
+      "cacheReadTokens": 70016,
+      "totalTokens": 20042
+    },
+    "run_id": "exec_turn_mvq3wuv7_y8oxlt",
+    "session_id": "mvs_4837602dffcc40b79e9116b286560bf2",
+    "error": null,
+    "output": "`answer.json` is written: budget 8192, selected `attn_k` + `attn_v` (budget_used 8192, improvement 150, hybrid_gain 1460, top_score 0.025112), confirmed by an independent full 2^13 enumeration.",
+    "answer_excerpt": "`answer.json` is written: budget 8192, selected `attn_k` + `attn_v` (budget_used 8192, improvement 150, hybrid_gain 1460, top_score 0.025112), confirmed by an independent full 2^13 enumeration.",
+    "workspace": "runs/mcode-sbx-hybrid-lora-bridging-full-fine-tuning-518822/workspace",
+    "deliverable_written": true,
+    "sandboxed": true
+  },
+  "timings": {
+    "plan_s": 166.5,
+    "build_validate_s": 0.2,
+    "critic_s": 71.3
+  },
+  "model": {
+    "name": "tierflow_pro",
+    "effort": "max"
+  }
+}

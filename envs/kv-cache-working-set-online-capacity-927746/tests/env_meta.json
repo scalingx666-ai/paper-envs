@@ -1,0 +1,147 @@
+{
+  "slug": "kv-cache-working-set-online-capacity-927746",
+  "arxiv_id": "arxiv:2609.27746",
+  "topic": "inference-infra",
+  "task_title": "KV-Cache LRU Working Set and Hit-Rate Capacity Planning",
+  "one_liner": "Simulate Mattson LRU stack distances over a page-reference trace and derive KV-cache hit curves plus minimum working-set capacities.",
+  "difficulty": "medium",
+  "estimated_minutes": 30,
+  "paper_concepts": [
+    "KV cache working set",
+    "prefix caching",
+    "Mattson stack algorithm",
+    "LRU stack distance",
+    "cache hit-rate curve",
+    "capacity planning"
+  ],
+  "deliverable": {
+    "path": "answer.json",
+    "format": "json",
+    "schema": "JSON object with integer total_accesses, integer distinct_pages, integer list stack_distance_histogram, integer list hit_counts_by_capacity, float list hit_rates_by_capacity, and integer-or-null min_capacity_for_target/min_capacity_for_stretch_target. Example: {'total_accesses': 10, 'distinct_pages': 4, 'stack_distance_histogram': [1,2,1], 'hit_counts_by_capacity': [1,3,4], 'hit_rates_by_capacity': [0.1,0.3,0.4], 'min_capacity_for_target': 2, 'min_capacity_for_stretch_target': null}."
+  },
+  "graded_paths": [
+    "total_accesses",
+    "distinct_pages",
+    "stack_distance_histogram",
+    "hit_counts_by_capacity",
+    "hit_rates_by_capacity",
+    "min_capacity_for_target",
+    "min_capacity_for_stretch_target"
+  ],
+  "tolerances": {},
+  "design_rationale": "The task isolates the paper's central mechanism: Mattson stack-distance computation and conversion of that distance profile into an LRU hit-rate curve and a minimum working-set capacity. The fixture is a small request trace of KV-cache page references; the solver must flatten requests, maintain the full LRU stack, record cold misses separately, build the finite-distance histogram, evaluate candidate capacities, and find the smallest capacity meeting each target. The fixture deliberately includes an exact hit-rate tie at the target and an unreachable stretch target, so the solver must use >= for equality and emit null when no finite capacity suffices. Grading covers raw counts, the distance profile, the hit curve, and both capacity decisions, making transcription of starter fields insufficient.",
+  "verification_notes": "Manual verification of the fixture: requests flatten to 16 accesses over pages A-E. Finite stack distances are 2,2,2,3,2,3,4,1,1,4,4 with five cold misses, so the histogram is [0,2,4,2,3]. Capacity hit counts for [1,2,3,4,5,8] are [0,2,6,8,11,11], giving rates [0.0,0.125,0.375,0.5,0.6875,0.6875]. The target 0.6875 is first met at capacity 5, and the stretch target 0.8 is unreachable because even an unbounded cache hits only the 11 non-cold accesses. The reference solution uses only Python standard-library json, runs in negligible time, writes answer.json, and matches the instruction's rounding and null rules.",
+  "starter_files": [
+    "trace.json",
+    "config.json"
+  ],
+  "generated_at": "2026-10-27T02:46:05Z",
+  "validation": {
+    "ok": true,
+    "problems": [],
+    "static": "ok",
+    "checks": 7,
+    "positive_reward": 1.0,
+    "negative_reward": 0.0,
+    "reference_runs": 2
+  },
+  "critic": {
+    "score": 8.0,
+    "verdict": "accept",
+    "paper_fidelity": 8,
+    "clarity": 9,
+    "verifier_strength": 8,
+    "strengths": [
+      "Faithfully operationalizes the paper's core mechanism: Mattson LRU stack distances → per-capacity hit counts → hit-rate curve → minimum working-set capacity for a target rate (including an unreachable stretch target).",
+      "Instruction is exceptionally precise: explicit stack semantics, cold-miss handling, hit condition d < C, histogram bounds, rounding via Python round(x,6), null rules, and empty-list handling.",
+      "Fixture is well-constructed and non-trivial: 16 accesses with 5 cold misses, LRU distances [2,2,2,3,2,3,4,1,1,4,4], histogram [0,2,4,2,3], hit counts [0,2,6,8,11,11], and one reachable and one unreachable target exercise the boundary logic.",
+      "Starter files contain only inputs (trace/config), no answers, so the deliverable cannot be produced by copying starter data.",
+      "Deterministic, exact-comparison grading over 7 distinct fields that jointly require a correct full implementation; all rate values are exact binary fractions (0, 0.125, 0.375, 0.5, 0.6875) so exact string/float comparison is safe.",
+      "I independently verified all fixture values and the reference solution's outputs match."
+    ],
+    "issues": [
+      "Simplifies real prefix caching: the task flattens requests to an independent page-reference trace rather than modeling whole-prefix reuse, so it captures the trace-replay form of KVSET but not prefix-tree semantics.",
+      "Single fixed fixture means the task has limited coverage of edge cases (e.g., total_accesses == 0, D == -1, target_hit_rate == 0, capacities exceeding max distance) that the reference handles but are not exercised.",
+      "The min_capacity search bound (max_distance+1) is correct but only implicit in the instruction; a solver relying on the capacities list alone could theoretically miss a valid smaller/larger capacity, though the spec's C>=1 definition is clear enough.",
+      "Exact float comparison of rates is stated but relies on the grader treating 0 vs 0.0 equivalently; not explicitly confirmed."
+    ],
+    "suggestions": [
+      "Add or note a second fixture (or hidden test) exercising the degenerate cases: empty trace, all-cold-miss trace (D == -1), target exactly 0, and target_reachable only at capacity > max listed capacity.",
+      "Explicitly state in the instruction that hit_count(C) saturates at D+1 so the minimal-capacity search is bounded, reinforcing why capacities beyond max_distance+1 are equivalent.",
+      "Clarify that hit_rates entries should be JSON floats (e.g., 0.0 not 0) to avoid any type-strict comparison ambiguity.",
+      "Consider a brief note mapping the task's page-reference trace to the paper's prefix-page KV semantics to strengthen fidelity."
+    ]
+  },
+  "critiques": [
+    {
+      "score": 8.0,
+      "verdict": "accept",
+      "paper_fidelity": 8,
+      "clarity": 9,
+      "verifier_strength": 8,
+      "strengths": [
+        "Faithfully operationalizes the paper's core mechanism: Mattson LRU stack distances → per-capacity hit counts → hit-rate curve → minimum working-set capacity for a target rate (including an unreachable stretch target).",
+        "Instruction is exceptionally precise: explicit stack semantics, cold-miss handling, hit condition d < C, histogram bounds, rounding via Python round(x,6), null rules, and empty-list handling.",
+        "Fixture is well-constructed and non-trivial: 16 accesses with 5 cold misses, LRU distances [2,2,2,3,2,3,4,1,1,4,4], histogram [0,2,4,2,3], hit counts [0,2,6,8,11,11], and one reachable and one unreachable target exercise the boundary logic.",
+        "Starter files contain only inputs (trace/config), no answers, so the deliverable cannot be produced by copying starter data.",
+        "Deterministic, exact-comparison grading over 7 distinct fields that jointly require a correct full implementation; all rate values are exact binary fractions (0, 0.125, 0.375, 0.5, 0.6875) so exact string/float comparison is safe.",
+        "I independently verified all fixture values and the reference solution's outputs match."
+      ],
+      "issues": [
+        "Simplifies real prefix caching: the task flattens requests to an independent page-reference trace rather than modeling whole-prefix reuse, so it captures the trace-replay form of KVSET but not prefix-tree semantics.",
+        "Single fixed fixture means the task has limited coverage of edge cases (e.g., total_accesses == 0, D == -1, target_hit_rate == 0, capacities exceeding max distance) that the reference handles but are not exercised.",
+        "The min_capacity search bound (max_distance+1) is correct but only implicit in the instruction; a solver relying on the capacities list alone could theoretically miss a valid smaller/larger capacity, though the spec's C>=1 definition is clear enough.",
+        "Exact float comparison of rates is stated but relies on the grader treating 0 vs 0.0 equivalently; not explicitly confirmed."
+      ],
+      "suggestions": [
+        "Add or note a second fixture (or hidden test) exercising the degenerate cases: empty trace, all-cold-miss trace (D == -1), target exactly 0, and target_reachable only at capacity > max listed capacity.",
+        "Explicitly state in the instruction that hit_count(C) saturates at D+1 so the minimal-capacity search is bounded, reinforcing why capacities beyond max_distance+1 are equivalent.",
+        "Clarify that hit_rates entries should be JSON floats (e.g., 0.0 not 0) to avoid any type-strict comparison ambiguity.",
+        "Consider a brief note mapping the task's page-reference trace to the paper's prefix-page KV semantics to strengthen fidelity."
+      ]
+    }
+  ],
+  "mcode": {
+    "status": "succeeded",
+    "reward": 1.0,
+    "verifier": {
+      "reward": 1.0,
+      "error": null,
+      "elapsed": 0.05,
+      "stdout": "reward=1.0000 checks=7/7\n"
+    },
+    "elapsed": 137.4,
+    "duration_ms": 130081,
+    "model": {
+      "providerId": "custom_provider:tierflow",
+      "modelId": "tierflow_pro",
+      "variant": "thinking",
+      "providerSource": "custom_provider",
+      "providerKind": "custom",
+      "protocol": "openai-completions"
+    },
+    "usage": {
+      "inputTokens": 53238,
+      "outputTokens": 3315,
+      "cacheReadTokens": 119424,
+      "totalTokens": 56553
+    },
+    "run_id": "exec_turn_mvq3xdwh_kgkmda",
+    "session_id": "mvs_ac27de61fad94186a9307a563a01a614",
+    "error": null,
+    "output": "`answer.json` is written and verified. The scratch `solve.py` couldn't be deleted — the sandbox's recoverable-delete step hangs — so it remains in the directory; the deliverable itself is final and correct (hand-checked against a full stack simulation).\n\nSummary: 16 accesses, 5 distinct pages, histogram [0,2,4,2,3], hit counts [0,2,6,8,11,11] for capacities [1,2,3,4,5,8] (rates [0.0,0.125,0.375,0.5,0.6875,0.6875]), min capacity for 0.6875 is 5, and 0.8 is unreachable (null).",
+    "answer_excerpt": "`answer.json` is written and verified. The scratch `solve.py` couldn't be deleted — the sandbox's recoverable-delete step hangs — so it remains in the directory; the deliverable itself is final and correct (hand-checked against a full stack simulation).\n\nSummary: 16 accesses, 5 distinct pages, histogram [0,2,4,2,3], hit counts [0,2,6,8,11,11] for capacities [1,2,3,4,5,8] (rates [0.0,0.125,0.375,0.5,0.6875,0.6875]), min capacity for 0.6875 is 5, and 0.8 is unreachable (null).",
+    "workspace": "runs/mcode-sbx-kv-cache-working-set-online-capacity-927746/workspace",
+    "deliverable_written": true,
+    "sandboxed": true
+  },
+  "timings": {
+    "plan_s": 129.9,
+    "build_validate_s": 0.2,
+    "critic_s": 24.0
+  },
+  "model": {
+    "name": "tierflow_pro",
+    "effort": "max"
+  }
+}

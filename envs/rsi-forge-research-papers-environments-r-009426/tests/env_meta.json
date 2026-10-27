@@ -1,0 +1,143 @@
+{
+  "slug": "rsi-forge-research-papers-environments-r-009426",
+  "arxiv_id": "arxiv:2610.09426",
+  "topic": "rsi",
+  "task_title": "Attempt-Log Audit for Recursive Self-Improvement",
+  "one_liner": "Audit repeated inherited coding attempts to identify genuine holdout gains, separate them from tuning-to-development overfitting, and rank runs with deterministic tie-breaks.",
+  "difficulty": "medium",
+  "estimated_minutes": 25,
+  "paper_concepts": [
+    "recursive self-improvement",
+    "attempt inheritance with fixed weights",
+    "genuine improvement versus standard error",
+    "beyond parameter tuning",
+    "tuning to development set",
+    "holdout evaluation",
+    "attempt-log audit"
+  ],
+  "deliverable": {
+    "path": "answer.json",
+    "format": "json",
+    "schema": "JSON object with keys: genuine_runs (sorted list of strings), genuine_rate (number rounded to 3 decimals), beyond_tuning_runs (sorted list of strings), beyond_tuning_rate (number rounded to 3 decimals), tuning_overfit_runs (sorted list of strings), top_run (string or empty), top_final_holdout (number rounded to 3 decimals), mean_exploration_gain_genuine (number rounded to 3 decimals). Example: {\"genuine_runs\":[\"R01\",\"R02\"],\"genuine_rate\":0.4,\"beyond_tuning_runs\":[\"R01\"],\"beyond_tuning_rate\":0.5,\"tuning_overfit_runs\":[\"R06\"],\"top_run\":\"R01\",\"top_final_holdout\":0.74,\"mean_exploration_gain_genuine\":12.5}. Extra keys are allowed."
+  },
+  "graded_paths": [
+    "genuine_runs",
+    "genuine_rate",
+    "beyond_tuning_runs",
+    "beyond_tuning_rate",
+    "tuning_overfit_runs",
+    "top_run",
+    "top_final_holdout",
+    "mean_exploration_gain_genuine"
+  ],
+  "tolerances": {
+    "genuine_rate": 0.001,
+    "beyond_tuning_rate": 0.001,
+    "top_final_holdout": 0.001,
+    "mean_exploration_gain_genuine": 0.001
+  },
+  "design_rationale": "The slice focuses on the paper's empirical mechanism for recursive self-improvement: fixed-weight models make successive inherited attempts, and improvement must be judged against holdout noise, beyond mere parameter tuning, and against development-set overfitting. The fixture encodes a mixture of genuine gains, noise-level changes, a regression, genuine tuning-only gains, and a tuning-overfit run. The tie-break between R01 and R08 tests careful ranking rather than just taking a maximum.",
+  "verification_notes": "The reference solution reads `attempts.csv`, groups by `run_id`, and writes `answer.json`. On the provided fixture it yields: genuine_runs = [R01, R02, R03, R04, R08, R09], genuine_rate = 0.6, beyond_tuning_runs = [R01, R02, R03, R08], beyond_tuning_rate = 0.667, tuning_overfit_runs = [R06], top_run = R01, top_final_holdout = 0.74, mean_exploration_gain_genuine = 14.667. R01 and R08 tie on final holdout at 0.74; R01 wins on exploration_gain 25 versus 5. All computations are deterministic and use only the Python standard library.",
+  "starter_files": [
+    "attempts.csv"
+  ],
+  "generated_at": "2026-10-27T02:31:39Z",
+  "validation": {
+    "ok": true,
+    "problems": [],
+    "static": "ok",
+    "checks": 8,
+    "positive_reward": 1.0,
+    "negative_reward": 0.0,
+    "reference_runs": 2
+  },
+  "critic": {
+    "score": 7.0,
+    "verdict": "revise",
+    "paper_fidelity": 6,
+    "clarity": 9,
+    "verifier_strength": 7,
+    "strengths": [
+      "Deterministic and fully specified: baseline/final, strict SE comparison, tie-break chain, empty-run fallbacks.",
+      "Discriminators are deliberate: boundary delta==SE, tuning edit with lower dev score, genuine-but-tuning runs, holdout tie broken by exploration gain.",
+      "Grounded in the paper's analysis axes; no copy-the-starter shortcut."
+    ],
+    "issues": [
+      "Audit-style task rather than implementing RSI-Forge's environment-construction mechanism.",
+      "The 0.001 tolerance makes the 3-decimal rounding requirement non-binding.",
+      "Only one fixture; empty-run fallbacks and varying attempt counts are untested."
+    ],
+    "suggestions": [
+      "Add a second fixture covering zero genuine runs, a genuine run with final edit none, unequal attempt counts, and a three-way tie.",
+      "Use exact comparison for rounded values.",
+      "Add a short delta_minus_se field to expose the SE-based reasoning."
+    ]
+  },
+  "critiques": [
+    {
+      "score": 7.0,
+      "verdict": "revise",
+      "paper_fidelity": 6,
+      "clarity": 9,
+      "verifier_strength": 7,
+      "strengths": [
+        "Deterministic and fully specified: baseline/final, strict SE comparison, tie-break chain, empty-run fallbacks.",
+        "Discriminators are deliberate: boundary delta==SE, tuning edit with lower dev score, genuine-but-tuning runs, holdout tie broken by exploration gain.",
+        "Grounded in the paper's analysis axes; no copy-the-starter shortcut."
+      ],
+      "issues": [
+        "Audit-style task rather than implementing RSI-Forge's environment-construction mechanism.",
+        "The 0.001 tolerance makes the 3-decimal rounding requirement non-binding.",
+        "Only one fixture; empty-run fallbacks and varying attempt counts are untested."
+      ],
+      "suggestions": [
+        "Add a second fixture covering zero genuine runs, a genuine run with final edit none, unequal attempt counts, and a three-way tie.",
+        "Use exact comparison for rounded values.",
+        "Add a short delta_minus_se field to expose the SE-based reasoning."
+      ]
+    }
+  ],
+  "mcode": {
+    "status": "succeeded",
+    "reward": 1.0,
+    "verifier": {
+      "reward": 1.0,
+      "error": null,
+      "elapsed": 0.05,
+      "stdout": "reward=1.0000 checks=8/8\n"
+    },
+    "elapsed": 19.8,
+    "duration_ms": 16311,
+    "model": {
+      "providerId": "custom_provider:tierflow",
+      "modelId": "tierflow_pro",
+      "variant": "thinking",
+      "providerSource": "custom_provider",
+      "providerKind": "custom",
+      "protocol": "openai-completions"
+    },
+    "usage": {
+      "inputTokens": 17380,
+      "outputTokens": 1695,
+      "cacheReadTokens": 42624,
+      "totalTokens": 19075
+    },
+    "run_id": "exec_turn_mvq3r6li_gyh804",
+    "session_id": "mvs_7a19c5471ed849fa9477ecbd5b791090",
+    "error": null,
+    "output": "Wrote `answer.json`: 6/10 genuine (R01, R02, R03, R04, R08, R09), 4 beyond-tuning, R06 the sole tuning-overfit, top run R01 at 0.74.\n\n<deliver-assets>\n<media type=\"file\" src=\"/private/var/folders/0t/g5670dnx5xx6wz3v0wjhdrdh0000gn/T/paper-env-solve-ex1zpq4c/workspace/answer.json\" caption=\"Audit results\" />\n</deliver-assets>",
+    "answer_excerpt": "Wrote `answer.json`: 6/10 genuine (R01, R02, R03, R04, R08, R09), 4 beyond-tuning, R06 the sole tuning-overfit, top run R01 at 0.74.\n\n<deliver-assets>\n<media type=\"file\" src=\"/private/var/folders/0t/g5670dnx5xx6wz3v0wjhdrdh0000gn/T/paper-env-solve-ex1zpq4c/workspace/answer.json\" caption=\"Audit results\" />\n</deliver-assets>",
+    "workspace": "runs/mcode-sbx-rsi-forge-research-papers-environments-r-009426/workspace",
+    "deliverable_written": true,
+    "sandboxed": true
+  },
+  "timings": {
+    "plan_s": 266.6,
+    "build_validate_s": 0.2,
+    "critic_s": 22.1
+  },
+  "model": {
+    "name": "tierflow_pro",
+    "effort": "max"
+  }
+}

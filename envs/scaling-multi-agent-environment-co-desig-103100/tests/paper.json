@@ -1,0 +1,26 @@
+{
+  "arxiv_id": "arxiv:2511.03100",
+  "arxiv_base": "2511.03100",
+  "title": "Scaling Multi-Agent Environment Co-Design with Diffusion Models",
+  "abstract": "The agent-environment co-design paradigm jointly optimises agent policies and environment configurations in search of improved system performance. With application domains ranging from warehouse logistics to windfarm management, co-design promises to fundamentally change how we deploy multi-agent systems. However, current co-design methods struggle to scale. They collapse under high-dimensional environment design spaces and suffer from sample inefficiency when addressing moving targets inherent to joint optimisation. We address these challenges by developing Diffusion Co-Design (DiCoDe), a scalable and sample-efficient co-design framework pushing co-design towards practically relevant settings. DiCoDe incorporates two core innovations. First, we introduce Projected Universal Guidance (PUG), a sampling technique that enables DiCoDe to explore a distribution of reward-maximising environments while satisfying hard constraints such as spatial separation between obstacles. Second, we devise a critic distillation mechanism to share knowledge from the reinforcement learning critic, ensuring that the guided diffusion model adapts to evolving agent policies using a dense and up-to-date learning signal. Together, these improvements lead to superior environment-policy pairs when validated on challenging multi-agent environment co-design benchmarks including warehouse automation, multi-agent pathfinding and wind farm optimisation. Our method consistently exceeds the state-of-the-art, achieving, for example, 39% higher rewards in the warehouse setting with 66% fewer simulation samples. This sets a new standard in agent-environment co-design, and is a stepping stone towards reaping the rewards of co-design in real world domains.",
+  "authors": [
+    "Hao Xiang Li",
+    "Michael Amir",
+    "Amanda Prorok"
+  ],
+  "topic": "agent-environment",
+  "topic_name": "Agent Environment / 智能体环境",
+  "topics": [
+    "agent-environment"
+  ],
+  "score": 9,
+  "url": "https://arxiv.org/abs/2511.03100v2",
+  "published": "2025-11-05",
+  "updated": "2026-05-29",
+  "categories": [
+    "cs.LG",
+    "cs.AI",
+    "cs.MA"
+  ],
+  "slug": "scaling-multi-agent-environment-co-desig-103100"
+}

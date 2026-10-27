@@ -1,0 +1,19 @@
+[tool]
+id = "kv-cache-working-set-online-capacity-927746"
+name = "KV-Cache LRU Working Set and Hit-Rate Capacity Planning"
+description = "Simulate Mattson LRU stack distances over a page-reference trace and derive KV-cache hit curves plus minimum working-set capacities."
+tags = ["paper-env", "inference-infra", "arxiv:2609.27746"]
+
+[task]
+id = "kv-cache-working-set-online-capacity-927746"
+
+[resources]
+cpus = 1
+memory_mb = 1024
+
+[agent]
+type = "react"
+
+[verifier]
+script = "tests/test.sh"
+rule = "reward_txt"

@@ -1,0 +1,19 @@
+[tool]
+id = "flashrt-agent-harness-guiding-agents-dep-718171"
+name = "Measurement-Gated Pipeline Deployment Optimizer"
+description = "Build an IR for a small dataflow pipeline, validate persistent-state scopes, and run a deterministic measurement-gated coordinate-descent optimizer over placement, sharding, and streaming choices."
+tags = ["paper-env", "agent-harness", "arxiv:2607.18171"]
+
+[task]
+id = "flashrt-agent-harness-guiding-agents-dep-718171"
+
+[resources]
+cpus = 1
+memory_mb = 1024
+
+[agent]
+type = "react"
+
+[verifier]
+script = "tests/test.sh"
+rule = "reward_txt"

@@ -1,0 +1,47 @@
+[settings]
+state_dir = "state"
+digest_dir = "digests"
+# 抓取时向前重叠的天数，用来吸收 arXiv 索引延迟和时区差。
+overlap_days = 2
+# 第一次运行（没有水位线）时回看的天数。
+initial_lookback_days = 3
+# 任何情况下最多回看多少天，避免状态损坏后无限回溯。
+max_lookback_days = 21
+max_results_per_topic = 30
+page_size = 50
+# submittedDate 看最新；relevance 在窗口内优先返回最相关的结果。
+sort_by = "submittedDate"
+request_timeout = 30.0
+retries = 5
+user_agent = "paper-radar/0.1 (mailto:max@example.com)"
+near_dup_days = 45
+# 需要代理时取消注释；设为空字符串表示强制直连（忽略环境变量代理）。
+# proxy = "http://127.0.0.1:7890"
+# proxy = ""
+
+[[topics]]
+id = "post-training"
+name = "后训练 / Post-training"
+query = '(abs:"post-training" OR abs:"post training" OR abs:"reinforcement learning with verifiable rewards" OR abs:RLVR OR abs:GRPO OR abs:"preference optimization" OR abs:"supervised fine-tuning" OR abs:distillation) AND (abs:LLM OR abs:LLMs OR abs:"language model" OR abs:"language models") AND (cat:cs.LG OR cat:cs.CL OR cat:cs.AI)'
+max_results = 30
+include_terms = ["RLVR", "GRPO", "post-training", "post training", "supervised fine-tuning", "SFT", "preference optimization", "DPO", "RLHF", "reward model", "on-policy distillation", "knowledge distillation", "distillation", "distilled", "fine-tuning"]
+title_terms = ["training", "alignment"]
+min_score = 3
+
+[[topics]]
+id = "inference"
+name = "推理 / Inference"
+query = '(abs:"KV cache" OR abs:"key-value cache" OR abs:"speculative decoding" OR abs:"LLM serving" OR abs:"inference engine" OR abs:"test-time scaling" OR abs:"long-context inference") AND (abs:LLM OR abs:LLMs OR abs:"language model" OR abs:"language models") AND (cat:cs.LG OR cat:cs.CL OR cat:cs.AI OR cat:cs.DC)'
+max_results = 30
+include_terms = ["KV cache", "key-value cache", "speculative decoding", "LLM serving", "inference engine", "test-time scaling", "long-context inference", "disaggregated", "prefill", "decode", "quantization", "compression", "serving"]
+title_terms = ["inference", "serving", "decoding", "cache"]
+min_score = 3
+
+[[topics]]
+id = "on-device"
+name = "本地 / 端侧 / On-device"
+query = '(abs:"on-device" OR abs:"on-device inference" OR abs:"on-device deployment" OR abs:"edge LLM" OR abs:"edge inference" OR abs:"edge deployment" OR abs:"edge platforms" OR abs:"Apple Silicon" OR abs:MLX OR abs:"local LLM" OR abs:"local inference" OR abs:"mobile LLM" OR abs:"mobile devices" OR abs:"embedded LLM") AND (abs:LLM OR abs:LLMs OR abs:"language model" OR abs:"language models") AND (cat:cs.LG OR cat:cs.CL OR cat:cs.AI OR cat:cs.AR OR cat:cs.PF)'
+max_results = 30
+include_terms = ["on-device", "edge inference", "edge deployment", "edge platform", "Apple Silicon", "MLX", "local inference", "local LLM", "mobile LLM", "embedded"]
+title_terms = ["mobile", "edge", "deployment", "quantization"]
+min_score = 3

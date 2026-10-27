@@ -1,0 +1,19 @@
+[tool]
+id = "hybrid-lora-bridging-full-fine-tuning-518822"
+name = "Hybrid-LoRA Module Budget Selector"
+description = "Implement the Hybrid-LoRA score and an exact 0/1 knapsack selector under a 10% full-fine-tuning parameter budget."
+tags = ["paper-env", "post-training", "arxiv:2605.18822"]
+
+[task]
+id = "hybrid-lora-bridging-full-fine-tuning-518822"
+
+[resources]
+cpus = 1
+memory_mb = 1024
+
+[agent]
+type = "react"
+
+[verifier]
+script = "tests/test.sh"
+rule = "reward_txt"

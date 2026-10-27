@@ -1,0 +1,19 @@
+[tool]
+id = "rsi-forge-research-papers-environments-r-009426"
+name = "Attempt-Log Audit for Recursive Self-Improvement"
+description = "Audit repeated inherited coding attempts to identify genuine holdout gains, separate them from tuning-to-development overfitting, and rank runs with deterministic tie-breaks."
+tags = ["paper-env", "rsi", "arxiv:2610.09426"]
+
+[task]
+id = "rsi-forge-research-papers-environments-r-009426"
+
+[resources]
+cpus = 1
+memory_mb = 1024
+
+[agent]
+type = "react"
+
+[verifier]
+script = "tests/test.sh"
+rule = "reward_txt"

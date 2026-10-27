@@ -1,0 +1,41 @@
+{
+  "deliverable": "answer.json",
+  "graded_paths": [
+    "budget",
+    "ranking",
+    "selected_modules",
+    "budget_used",
+    "baseline_lora_gain",
+    "hybrid_gain",
+    "improvement",
+    "top_score"
+  ],
+  "tolerances": {},
+  "expected": {
+    "budget": 8192,
+    "ranking": [
+      "attn_v",
+      "mlp_up",
+      "attn_k",
+      "attn_q",
+      "attn_q3",
+      "mlp_down3",
+      "mlp_gate2",
+      "mlp_down",
+      "attn_o",
+      "mlp_gate",
+      "mlp_down2",
+      "mlp_up2",
+      "attn_q2"
+    ],
+    "selected_modules": [
+      "attn_k",
+      "attn_v"
+    ],
+    "budget_used": 8192,
+    "baseline_lora_gain": 1310,
+    "hybrid_gain": 1460,
+    "improvement": 150,
+    "top_score": 0.025112
+  }
+}
