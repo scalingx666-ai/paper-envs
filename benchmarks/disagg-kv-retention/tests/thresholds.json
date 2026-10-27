@@ -1,0 +1,10 @@
+{
+  "hidden_geomean_mean_ttft_ratio_max": 0.395,
+  "hidden_total_ttft_ratio_max": 0.46,
+  "hidden_geomean_p95_ratio_max": 0.50,
+  "hidden_scenario_mean_ttft_ratio_max": 0.68,
+  "hidden_total_transfer_ratio_max": 1.65,
+  "max_invalid_victim_lists": 0,
+  "max_rejected_admissions": 0,
+  "max_policy_bytes": 1048576
+}

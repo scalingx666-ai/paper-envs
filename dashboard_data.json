@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-27T10:36:02Z",
+  "generated_at": "2026-10-27T16:25:42Z",
   "model": {
     "name": "tierflow_pro",
     "effort": "max"
@@ -1514,6 +1514,30 @@
       }
     }
   ],
+  "benchmark": {
+    "slug": "disagg-kv-retention",
+    "title": "Disaggregated KV retention",
+    "status": "benchmark-grade",
+    "hidden_workloads": 8,
+    "gates": "5 performance gates + contract + determinism",
+    "desc": "Online KV-cache admission and eviction for a disaggregated LLM serving pool. The verifier runs the submitted policy as an unprivileged child over eight held-out workloads and requires every conjunctive gate; reward is binary. Generated envs below are demo-grade and use exact-output grading.",
+    "reference": {
+      "geomean": 0.378,
+      "total": 0.439,
+      "p95": 0.448
+    },
+    "independent": {
+      "geomean": 0.38,
+      "total": 0.441,
+      "p95": 0.429
+    },
+    "starter": {
+      "geomean": 0.405,
+      "total": 0.492,
+      "p95": 0.572
+    },
+    "readme": "benchmarks/disagg-kv-retention/README.md"
+  },
   "karotte": {
     "path": "karotte_env",
     "tasks": [

@@ -1,0 +1,19 @@
+{
+  "capacity_bytes": 12884901888,
+  "cost": {
+    "alpha_bw_ms_per_token": 0.026,
+    "alpha_flop_ms_per_token2": 8e-06
+  },
+  "fabric_bytes_per_sec": 25000000000,
+  "generator": "authoring/provenance/tracegen.py",
+  "model": {
+    "bytes_per_elem": 2,
+    "head_dim": 128,
+    "kv_heads": 8,
+    "layers": 32
+  },
+  "n_requests": 22000,
+  "scenario": "hidden_mixed_scan",
+  "seed": 9707,
+  "trace_sha256": "7b3b35ee99b27f2e6a6310d07f73d7fa0b4fd262c99a7d7549170432460216fc"
+}

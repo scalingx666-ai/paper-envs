@@ -4,6 +4,13 @@ Turn selected papers from `paper-radar` into **evaluable agent environments** in
 Harbor format, mirror them into **Karotte** tasks, and evaluate those
 environments with **MiniMax Code** as the agent under test.
 
+The repository has two quality tiers. Generated tasks under `envs/` are
+demo-grade: they use public fixtures and exact-output grading, and they exist to
+exercise the pipeline. Hand-authored tasks under `benchmarks/` are
+benchmark-grade: held-out data, a separate no-network verifier, calibrated
+conjunctive gates, and a verified separation between correct and defective
+policies.
+
 The `paper-radar/` directory is vendored so the survey CSV, the crawler source,
 and its tests travel with this repository. It is upstream code, not part of the
 generation pipeline:
@@ -13,11 +20,87 @@ paper-envs/
   config.py, papers.py, llm.py, prompts.py   # generation pipeline
   harbor.py, karotte_mirror.py, mcode.py     # validators and evaluators
   pipeline.py, dashboard.py, run.sh
-  envs/<slug>/                               # generated Harbor tasks
+  envs/<slug>/                               # generated demo tasks
+  benchmarks/<slug>/                         # hand-authored benchmark-grade tasks
   karotte_env/                               # Karotte task mirror
   paper-radar/                               # vendored survey + crawler
   runs/                                      # local run artifacts (gitignored)
 ```
+
+## Quality tiers
+
+| Tier | Location | Data | Grading | Intended use |
+|:--|:--|:--|:--|:--|
+| demo | `envs/<slug>/` | one public fixture | exact match against `golden.json` | pipeline smoke test, prompt debugging |
+| benchmark | `benchmarks/<slug>/` | public dev set + hidden holdout | calibrated thresholds over hidden workloads, binary reward | measuring agent capability |
+
+Demo reward is the fraction of checks that match the golden output. A demo can
+be solved by copying the fixture or by pattern-matching the expected file, so a
+high demo score is not evidence of generalization. Benchmark tasks never expose
+the holdout, grade only the delivered artifact, and include at least one
+independent correct implementation and several comparators that fail.
+
+### Benchmark pilot: `disagg-kv-retention`
+
+`benchmarks/disagg-kv-retention/` is the reference for the benchmark tier. It
+asks for an online KV-cache retention policy for a disaggregated LLM serving
+pool, following Liu et al., SYSTOR '26. The agent gets five public workloads,
+the simulator, the cost model, and an LRU starter; the verifier runs the
+submitted policy as an unprivileged child over eight hidden workloads and
+applies five calibrated performance gates plus contract and determinism checks.
+
+| Submission | Reward | Evidence |
+|:--|:--|:--|
+| reference (decayed LFU) | 1 | 8/8 tests, geomean 0.378, total 0.439, p95 0.448 |
+| independent CTLFU | 1 | 8/8 tests, geomean 0.380, total 0.441, p95 0.429 |
+| independent SLRU | 1 | 8/8 tests at the boundary (0.388 / 0.456 / 0.470) |
+| starter LRU | 0 | fails geomean, total, and p95 gates |
+| hidden-trace cheat | 0 | contract violation + performance failure |
+| empty submission | 0 | missing artifact |
+
+The task README records the full comparator table, threshold calibration, and
+anti-cheat design. Reproduce the verifier locally with:
+
+```bash
+cd benchmarks/disagg-kv-retention
+docker build -t kvret-env:v3 environment
+docker build -t kvret-tests:v4 tests
+docker run --rm kvret-env:v3 sh -c \
+  'python starter/check_policy.py --policy starter/policy.py'
+# grade a policy: mount it at /app/policy.py in the tests image
+docker run --rm -v "$PWD/policy.py:/app/policy.py:ro" kvret-tests:v4 \
+  bash /tests/test.sh
+```
+
+The benchmark README explains why this paper met the bar; the next section
+records the bar itself.
+
+## Benchmark selection criteria
+
+A paper is eligible for benchmark-grade authoring only if all of the following
+hold:
+
+1. **A decision, not a summary.** The paper defines an online decision an agent
+   can implement (admit/evict, schedule, route, rank, calibrate) with a
+   machine-checkable interface.
+2. **A measurable objective.** The decision has a scalar cost or quality metric
+   that can be computed by a simulator or a deterministic checker, without
+   human judgement.
+3. **A held-out split.** Workloads or instances can be generated that differ
+   structurally from the public development set, so memorization does not pass.
+4. **A non-trivial baseline.** A standard textbook policy leaves a measurable
+   gap that a better design can close, and the gap is stable across seeds.
+5. **Independent solvability.** At least one implementation written without
+   access to the hidden split clears every gate; a gate only the reference can
+   hit is rejected as too tight.
+6. **Adversarial safety.** The verifier can isolate the submitted artifact,
+   withhold the holdout, resist copying, and detect malformed outputs.
+
+Papers that only describe an architecture, report a leaderboard result without
+an implementable decision, or depend on proprietary data stay demo-grade. The
+six generated tasks in `envs/` are retained as pipeline fixtures, not as
+benchmarks.
+
 
 ```
 paper-radar survey CSV
@@ -172,12 +255,16 @@ inference-infra.
 
 ## Guarantees and limits
 
-- The reference solution runs twice; non-determinism fails validation.
-- Positive check (reference output) must score 1.0; negative check (empty
-  workspace) must score 0.0.
-- Tasks are offline, stdlib-only, and finish in under 60 seconds.
-- Docker is not available on this machine, so Harbor image builds and Karotte
-  container runs are not executed here. Harbor validation uses a local sandbox
-  with the same workspace/verifier contract.
+- Generated demo tasks run their reference solution twice; non-determinism
+  fails validation. Positive check (reference output) must score 1.0; negative
+  check (empty workspace) must score 0.0.
+- Generated demo tasks are offline, stdlib-only, and finish in under 60 seconds.
+  Benchmark tasks give the agent open network access, but the graded artifact is
+  stdlib-only and the verifier runs with no network.
+- The benchmark pilot was built and graded with Docker 29.8 in Linux
+  containers; generated tasks are validated with the local sandbox rather than
+  a Harbor image build.
+- Benchmark rewards are binary and conjunctive; demo rewards are the fraction
+  of matching checks. The two tiers are not comparable.
 - MCode evaluation is a real solve attempt, not a simulation; its reward can be
   lower than the reference. Failures are kept and shown in the dashboard.

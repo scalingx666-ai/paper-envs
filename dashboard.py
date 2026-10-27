@@ -208,6 +208,23 @@ def collect() -> dict:
         "run": latest_run,
         "topics": by_topic,
         "papers": papers,
+        "benchmark": {
+            "slug": "disagg-kv-retention",
+            "title": "Disaggregated KV retention",
+            "status": "benchmark-grade",
+            "hidden_workloads": 8,
+            "gates": "5 performance gates + contract + determinism",
+            "desc": (
+                "Online KV-cache admission and eviction for a disaggregated LLM serving pool. "
+                "The verifier runs the submitted policy as an unprivileged child over eight "
+                "held-out workloads and requires every conjunctive gate; reward is binary. "
+                "Generated envs below are demo-grade and use exact-output grading."
+            ),
+            "reference": {"geomean": 0.378, "total": 0.439, "p95": 0.448},
+            "independent": {"geomean": 0.380, "total": 0.441, "p95": 0.429},
+            "starter": {"geomean": 0.405, "total": 0.492, "p95": 0.572},
+            "readme": "benchmarks/disagg-kv-retention/README.md",
+        },
         "karotte": {
             "path": _uri(KAROTTE_DIR),
             "tasks": karotte_tasks,
@@ -278,6 +295,25 @@ HTML = r"""<!doctype html>
   .stat .k { color: var(--muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
   .stat .v { font-size: 26px; font-weight: 750; margin-top: 3px; letter-spacing: -.02em; }
   .stat .v small { font-size: 12px; color: var(--dim); font-weight: 500; }
+  .bench {
+    border: 1px solid rgba(94,234,212,.35);
+    background: linear-gradient(120deg, rgba(20,45,52,.75), rgba(13,20,32,.95));
+    border-radius: 16px; padding: 18px 20px; margin: 22px 0 8px; display: grid; gap: 12px;
+  }
+  .bench .head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .bench h2 { margin: 0; font-size: 17px; letter-spacing: -.01em; }
+  .bench .tag {
+    background: rgba(52,211,153,.14); color: var(--good); border: 1px solid rgba(52,211,153,.4);
+    border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .bench .desc { color: var(--muted); font-size: 13px; max-width: 1040px; }
+  .bench .nums { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+  .bench .num { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: rgba(7,11,18,.5); }
+  .bench .num .k { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .07em; }
+  .bench .num .v { font-size: 18px; font-weight: 700; margin-top: 3px; font-family: var(--mono); }
+  .bench a { color: var(--accent); }
+  @media (max-width: 820px) { .bench .nums { grid-template-columns: 1fr; } }
   .toolbar {
     display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
     margin: 22px 0 8px; padding: 12px; border: 1px solid var(--line);
@@ -434,10 +470,11 @@ HTML = r"""<!doctype html>
     <div class="sub">
       每一个 Harbor 任务都由一篇论文的核心机制生成：离线、确定性、可执行。Karotte 镜像同一套
       instruction / fixtures / golden，MiniMax Code 以 <span class="mono">tierflow_pro · effort=max</span>
-      作为被测智能体实际解题，再由 verifier 给出 reward。
+      作为被测智能体实际解题，再由 verifier 给出 reward。<b>envs/ 是 demo 级（公开 fixture、精确匹配）；benchmarks/ 是 benchmark 级（隐藏 holdout、校准阈值、二元 reward）。</b>
     </div>
     <div class="pipeline" id="pipeline"></div>
     <div class="stats" id="stats"></div>
+    <section class="bench" id="bench"></section>
   </header>
 
   <div class="toolbar">
@@ -525,13 +562,30 @@ function renderHeader() {
     ["Papers", s.papers, "篇已生成"],
     ["Categories", s.topics, "个主题"],
     ["Graded checks", s.checks, "条断言"],
-    ["Validated", `${s.validated}/${s.papers}`, "Harbor 本地验证"],
+    ["Demos validated", `${s.validated}/${s.papers}`, "本地验证"],
     ["Avg critic", fmt(s.avg_critic, 1), "/ 10"],
     ["MCode pass", `${s.mcode_pass}/${s.mcode_runs}`, "reward = 1.0"],
   ];
   $("#stats").innerHTML = stats.map(([k, v, small]) =>
     `<div class="stat"><div class="k">${esc(k)}</div><div class="v">${esc(v)} <small>${esc(small)}</small></div></div>`
   ).join("");
+  const b = DATA.benchmark;
+  if (b) {
+    $("#bench").innerHTML = `
+      <div class="head">
+        <h2>Benchmark tier · ${esc(b.title)}</h2>
+        <span class="tag">${esc(b.status)}</span>
+        <span class="pill">${b.hidden_workloads} hidden workloads</span>
+        <span class="pill">${esc(b.gates)}</span>
+      </div>
+      <div class="desc">${esc(b.desc)}</div>
+      <div class="nums">
+        <div class="num"><div class="k">reference · geo / total / p95</div><div class="v">${fmt(b.reference.geomean, 3)} / ${fmt(b.reference.total, 3)} / ${fmt(b.reference.p95, 3)}</div></div>
+        <div class="num"><div class="k">independent CTLFU · geo / total / p95</div><div class="v">${fmt(b.independent.geomean, 3)} / ${fmt(b.independent.total, 3)} / ${fmt(b.independent.p95, 3)}</div></div>
+        <div class="num"><div class="k">starter LRU · fails 3 gates</div><div class="v">${fmt(b.starter.geomean, 3)} / ${fmt(b.starter.total, 3)} / ${fmt(b.starter.p95, 3)}</div></div>
+      </div>
+      <div class="desc"><a href="${esc(b.readme)}" target="_blank">task README</a> · <a href="benchmarks/README.md" target="_blank">benchmark index</a> · binary conjunctive reward</div>`;
+  }
   const model = DATA.model?.name || "tierflow_pro";
   const effort = DATA.model?.effort || "max";
   $("#generated").textContent = `generated ${DATA.generated_at} · ${model} · effort=${effort} · ${DATA.summary.karotte_tasks} Karotte tasks`;
@@ -566,6 +620,7 @@ function cardHTML(p) {
   const mcodeReward = mcode ? mcode.reward : null;
   const validation = p.validation?.ok;
   const badges = [
+    `<span class="badge">demo</span>`,
     `<span class="badge ${validation ? "good" : "bad"}">${validation ? "validated" : "unvalidated"}</span>`,
     `<span class="badge">${esc(p.difficulty)}</span>`,
   ].join("");
@@ -644,6 +699,7 @@ function openModal(slug) {
   const critic = p.critic?.score;
   const mcode = p.mcode;
   $("#modal-badges").innerHTML = [
+    `<span class="badge">demo</span>`,
     `<span class="badge ${p.validation?.ok ? "good" : "bad"}">${p.validation?.ok ? "Harbor validated" : "validation failed"}</span>`,
     `<span class="badge">${esc(p.difficulty)} · ${esc(p.estimated_minutes || "?")} min</span>`,
     `<span class="badge ${clsFor(critic, 8, 6)}">critic ${critic == null ? "—" : fmt(critic, 1)}/10</span>`,

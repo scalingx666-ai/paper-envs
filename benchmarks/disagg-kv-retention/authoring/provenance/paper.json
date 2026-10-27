@@ -1,0 +1,18 @@
+{
+  "title": "To Keep or Not to Keep: Learning KV Cache Retention in Disaggregated LLM Serving Systems",
+  "authors": ["Dong Liu", "Yanxuan Yu", "Eric Jiang", "Shu Wang", "Ying Nian Wu"],
+  "venue": "SYSTOR '26 (19th ACM International Systems and Storage Conference), pages 52-65",
+  "year": 2026,
+  "doi": "10.1145/3793230.3837769",
+  "code": "https://github.com/FastLM/KVLearn",
+  "license": "MIT",
+  "paper_use": [
+    "problem framing: disaggregated prefill/decode with a global KV pool",
+    "cost model: R(L) prefill recompute, T(B) fabric transfer, net benefit R - T",
+    "hardware calibration for LLaMA-3-8B on A100 and 25 GB/s fabric (alpha_bw=0.026 ms/token, alpha_flop=8e-6 ms/token^2, crossover 512 tokens)",
+    "workload taxonomy: text, image, video prefixes; drift, sessions, scan pollution"
+  ],
+  "deviation": "The paper's reference code evaluates R(L) as a piecewise envelope, max(alpha_bw*L, alpha_flop*L^2). The benchmark sums both terms as a conservative total-latency model and documents this in environment/data/COST_MODEL.md; the constants, cost objective, and workload taxonomy are unchanged.",
+  "independence": "The benchmark ships its own simulator, trace generator, and baselines. No source code from the KVLearn repository is included, and the reference solution is an independent online decayed-LFU policy rather than the paper's learned PRP/CARS/ATC stack.",
+  "paper_url": "https://doi.org/10.1145/3793230.3837769"
+}

@@ -1,0 +1,19 @@
+{
+  "capacity_bytes": 10737418240,
+  "cost": {
+    "alpha_bw_ms_per_token": 0.026,
+    "alpha_flop_ms_per_token2": 8e-06
+  },
+  "fabric_bytes_per_sec": 10000000000,
+  "generator": "authoring/provenance/tracegen.py",
+  "model": {
+    "bytes_per_elem": 2,
+    "head_dim": 128,
+    "kv_heads": 8,
+    "layers": 32
+  },
+  "n_requests": 16000,
+  "scenario": "hidden_video_expensive",
+  "seed": 9808,
+  "trace_sha256": "8f5b8d4dc933b4c556a033f45c5ce54c1a6683f08e1405c739c96e4619d407ed"
+}

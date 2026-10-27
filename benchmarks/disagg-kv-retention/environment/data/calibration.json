@@ -1,0 +1,387 @@
+{
+  "note": "Baselines measured on the five public workloads with the shipped simulator. Ratios divide the baseline metric by the no-cache baseline on the same workload. The hidden evaluation uses the same metrics but different workloads; these numbers are for local comparison only.",
+  "scenarios": {
+    "public_drift": {
+      "fifo": {
+        "hit_rate": 0.8680555555555556,
+        "hits": 15625,
+        "mean_ttft_ms": 5.21442083043485,
+        "mean_ttft_ratio": 0.24657995812065317,
+        "p50_ttft_ms": 3.01989888,
+        "p95_ttft_ms": 20.65010688,
+        "p95_ttft_ratio": 0.44305329262698323,
+        "p99_ttft_ms": 46.60862976,
+        "requests": 18000,
+        "total_ttft_ms": 93859.5749478273,
+        "transfer_gib": 1394.3984375,
+        "transfer_ratio": 1.1242173819931722
+      },
+      "lru": {
+        "hit_rate": 0.8791666666666667,
+        "hits": 15825,
+        "mean_ttft_ms": 5.009138697101476,
+        "mean_ttft_ratio": 0.23687255983303923,
+        "p50_ttft_ms": 3.01989888,
+        "p95_ttft_ms": 20.65010688,
+        "p95_ttft_ratio": 0.44305329262698323,
+        "p99_ttft_ms": 46.60862976,
+        "requests": 18000,
+        "total_ttft_ms": 90164.49654782657,
+        "transfer_gib": 1380.5,
+        "transfer_ratio": 1.1130119298068808
+      },
+      "no_cache": {
+        "hit_rate": 0.0,
+        "hits": 0,
+        "mean_ttft_ms": 21.146977516653646,
+        "mean_ttft_ratio": 1.0,
+        "p50_ttft_ms": 18.093506559999998,
+        "p95_ttft_ms": 46.60862976,
+        "p95_ttft_ratio": 1.0,
+        "p99_ttft_ms": 46.60862976,
+        "requests": 18000,
+        "total_ttft_ms": 380645.59529976564,
+        "transfer_gib": 1240.328125,
+        "transfer_ratio": 1.0
+      },
+      "second_touch": {
+        "hit_rate": 0.8589444444444444,
+        "hits": 15461,
+        "mean_ttft_ms": 5.348313153990353,
+        "mean_ttft_ratio": 0.2529114692526842,
+        "p50_ttft_ms": 3.01989888,
+        "p95_ttft_ms": 23.272243200000002,
+        "p95_ttft_ratio": 0.4993118939525761,
+        "p99_ttft_ms": 46.60862976,
+        "requests": 18000,
+        "total_ttft_ms": 96269.63677182635,
+        "transfer_gib": 1332.4921875,
+        "transfer_ratio": 1.074306194177448
+      },
+      "size_threshold_256": {
+        "hit_rate": 0.7404444444444445,
+        "hits": 13328,
+        "mean_ttft_ms": 5.487461043768279,
+        "mean_ttft_ratio": 0.25949150602949284,
+        "p50_ttft_ms": 3.3554432000000003,
+        "p95_ttft_ms": 20.65010688,
+        "p95_ttft_ratio": 0.44305329262698323,
+        "p99_ttft_ms": 46.60862976,
+        "requests": 18000,
+        "total_ttft_ms": 98774.29878782903,
+        "transfer_gib": 1366.59375,
+        "transfer_ratio": 1.1018001788841159
+      }
+    },
+    "public_long_prefix": {
+      "fifo": {
+        "hit_rate": 0.6659,
+        "hits": 6659,
+        "mean_ttft_ms": 154.41430315007364,
+        "mean_ttft_ratio": 0.45899026807838483,
+        "p50_ttft_ms": 67.10886400000001,
+        "p95_ttft_ms": 542.2645248,
+        "p95_ttft_ratio": 0.6325723983976026,
+        "p99_ttft_ms": 857.2370943999999,
+        "requests": 10000,
+        "total_ttft_ms": 1544143.0315007363,
+        "transfer_gib": 6928.6875,
+        "transfer_ratio": 1.3462421217530693
+      },
+      "lru": {
+        "hit_rate": 0.7139,
+        "hits": 7139,
+        "mean_ttft_ms": 139.63198251007424,
+        "mean_ttft_ratio": 0.4150504181100839,
+        "p50_ttft_ms": 53.687091200000005,
+        "p95_ttft_ms": 542.2645248,
+        "p95_ttft_ratio": 0.6325723983976026,
+        "p99_ttft_ms": 857.2370943999999,
+        "requests": 10000,
+        "total_ttft_ms": 1396319.8251007425,
+        "transfer_gib": 6668.625,
+        "transfer_ratio": 1.295712047797734
+      },
+      "no_cache": {
+        "hit_rate": 0.0,
+        "hits": 0,
+        "mean_ttft_ms": 336.42173677569843,
+        "mean_ttft_ratio": 1.0,
+        "p50_ttft_ms": 294.4008192,
+        "p95_ttft_ms": 857.2370943999999,
+        "p95_ttft_ratio": 1.0,
+        "p99_ttft_ms": 857.2370943999999,
+        "requests": 10000,
+        "total_ttft_ms": 3364217.367756984,
+        "transfer_gib": 5146.6875,
+        "transfer_ratio": 1.0
+      },
+      "second_touch": {
+        "hit_rate": 0.7151,
+        "hits": 7151,
+        "mean_ttft_ms": 139.1419829452743,
+        "mean_ttft_ratio": 0.4135939142304709,
+        "p50_ttft_ms": 53.687091200000005,
+        "p95_ttft_ms": 542.2645248,
+        "p95_ttft_ratio": 0.6325723983976026,
+        "p99_ttft_ms": 857.2370943999999,
+        "requests": 10000,
+        "total_ttft_ms": 1391419.829452743,
+        "transfer_gib": 6491.4375,
+        "transfer_ratio": 1.2612845641006958
+      },
+      "size_threshold_256": {
+        "hit_rate": 0.7139,
+        "hits": 7139,
+        "mean_ttft_ms": 139.63198251007424,
+        "mean_ttft_ratio": 0.4150504181100839,
+        "p50_ttft_ms": 53.687091200000005,
+        "p95_ttft_ms": 542.2645248,
+        "p95_ttft_ratio": 0.6325723983976026,
+        "p99_ttft_ms": 857.2370943999999,
+        "requests": 10000,
+        "total_ttft_ms": 1396319.8251007425,
+        "transfer_gib": 6668.625,
+        "transfer_ratio": 1.295712047797734
+      }
+    },
+    "public_mixed_scan": {
+      "fifo": {
+        "hit_rate": 0.5296111111111111,
+        "hits": 9533,
+        "mean_ttft_ms": 49.57666780444417,
+        "mean_ttft_ratio": 0.33166024536608557,
+        "p50_ttft_ms": 6.29354496,
+        "p95_ttft_ms": 262.18856448,
+        "p95_ttft_ratio": 0.3307068649688858,
+        "p99_ttft_ms": 792.81258496,
+        "requests": 18000,
+        "total_ttft_ms": 892380.0204799951,
+        "transfer_gib": 5467.8583984375,
+        "transfer_ratio": 1.3339973434828964
+      },
+      "lru": {
+        "hit_rate": 0.5682777777777778,
+        "hits": 10229,
+        "mean_ttft_ms": 44.156230015999455,
+        "mean_ttft_ratio": 0.29539835430881645,
+        "p50_ttft_ms": 6.29354496,
+        "p95_ttft_ms": 262.18856448,
+        "p95_ttft_ratio": 0.3307068649688858,
+        "p99_ttft_ms": 792.81258496,
+        "requests": 18000,
+        "total_ttft_ms": 794812.1402879902,
+        "transfer_gib": 5309.3837890625,
+        "transfer_ratio": 1.2953341791302586
+      },
+      "no_cache": {
+        "hit_rate": 0.0,
+        "hits": 0,
+        "mean_ttft_ms": 149.48028440888837,
+        "mean_ttft_ratio": 1.0,
+        "p50_ttft_ms": 13.17691392,
+        "p95_ttft_ms": 792.81258496,
+        "p95_ttft_ratio": 1.0,
+        "p99_ttft_ms": 792.81258496,
+        "requests": 18000,
+        "total_ttft_ms": 2690645.1193599906,
+        "transfer_gib": 4098.8525390625,
+        "transfer_ratio": 1.0
+      },
+      "second_touch": {
+        "hit_rate": 0.5798333333333333,
+        "hits": 10437,
+        "mean_ttft_ms": 43.32480285511048,
+        "mean_ttft_ratio": 0.28983623510241535,
+        "p50_ttft_ms": 6.29354496,
+        "p95_ttft_ms": 262.18856448,
+        "p95_ttft_ratio": 0.3307068649688858,
+        "p99_ttft_ms": 792.81258496,
+        "requests": 18000,
+        "total_ttft_ms": 779846.4513919886,
+        "transfer_gib": 5041.81396484375,
+        "transfer_ratio": 1.2300549768001476
+      },
+      "size_threshold_256": {
+        "hit_rate": 0.4252222222222222,
+        "hits": 7654,
+        "mean_ttft_ms": 44.43281378132584,
+        "mean_ttft_ratio": 0.29724865695187147,
+        "p50_ttft_ms": 6.29354496,
+        "p95_ttft_ms": 262.18856448,
+        "p95_ttft_ratio": 0.3307068649688858,
+        "p99_ttft_ms": 792.81258496,
+        "requests": 18000,
+        "total_ttft_ms": 799790.6480638651,
+        "transfer_gib": 5257.5634765625,
+        "transfer_ratio": 1.2826915402438517
+      }
+    },
+    "public_multimodal": {
+      "fifo": {
+        "hit_rate": 0.9155833333333333,
+        "hits": 10987,
+        "mean_ttft_ms": 5.477354693973242,
+        "mean_ttft_ratio": 0.21225835536748525,
+        "p50_ttft_ms": 3.01989888,
+        "p95_ttft_ms": 20.65010688,
+        "p95_ttft_ratio": 0.2513487667737005,
+        "p99_ttft_ms": 46.60862976,
+        "requests": 12000,
+        "total_ttft_ms": 65728.2563276789,
+        "transfer_gib": 1036.4091796875,
+        "transfer_ratio": 1.0931291309726254
+      },
+      "lru": {
+        "hit_rate": 0.9280833333333334,
+        "hits": 11137,
+        "mean_ttft_ms": 5.151921072639934,
+        "mean_ttft_ratio": 0.1996471572426865,
+        "p50_ttft_ms": 3.01989888,
+        "p95_ttft_ms": 13.17691392,
+        "p95_ttft_ratio": 0.1603866305836383,
+        "p99_ttft_ms": 46.60862976,
+        "requests": 12000,
+        "total_ttft_ms": 61823.0528716792,
+        "transfer_gib": 1022.6279296875,
+        "transfer_ratio": 1.0785936693697489
+      },
+      "no_cache": {
+        "hit_rate": 0.0,
+        "hits": 0,
+        "mean_ttft_ms": 25.8051311313057,
+        "mean_ttft_ratio": 1.0,
+        "p50_ttft_ms": 20.65010688,
+        "p95_ttft_ms": 82.157184,
+        "p95_ttft_ratio": 1.0,
+        "p99_ttft_ms": 104.80942080000001,
+        "requests": 12000,
+        "total_ttft_ms": 309661.5735756684,
+        "transfer_gib": 948.1123046875,
+        "transfer_ratio": 1.0
+      },
+      "second_touch": {
+        "hit_rate": 0.9026666666666666,
+        "hits": 10832,
+        "mean_ttft_ms": 5.767671776639782,
+        "mean_ttft_ratio": 0.22350871798681485,
+        "p50_ttft_ms": 3.01989888,
+        "p95_ttft_ms": 20.65010688,
+        "p95_ttft_ratio": 0.2513487667737005,
+        "p99_ttft_ms": 46.60862976,
+        "requests": 12000,
+        "total_ttft_ms": 69212.06131967738,
+        "transfer_gib": 1004.32421875,
+        "transfer_ratio": 1.0592882444248286
+      },
+      "size_threshold_256": {
+        "hit_rate": 0.6119166666666667,
+        "hits": 7343,
+        "mean_ttft_ms": 6.579012320639762,
+        "mean_ttft_ratio": 0.254949772863521,
+        "p50_ttft_ms": 6.03979776,
+        "p95_ttft_ms": 13.17691392,
+        "p95_ttft_ratio": 0.1603866305836383,
+        "p99_ttft_ms": 46.60862976,
+        "requests": 12000,
+        "total_ttft_ms": 78948.14784767714,
+        "transfer_gib": 1016.31298828125,
+        "transfer_ratio": 1.0719331278125634
+      }
+    },
+    "public_text_zipf": {
+      "fifo": {
+        "hit_rate": 0.8794,
+        "hits": 13191,
+        "mean_ttft_ms": 4.077709858133636,
+        "mean_ttft_ratio": 0.24855906711896547,
+        "p50_ttft_ms": 3.3554432000000003,
+        "p95_ttft_ms": 18.093506559999998,
+        "p95_ttft_ratio": 0.4480662804096272,
+        "p99_ttft_ms": 40.38131712,
+        "requests": 15000,
+        "total_ttft_ms": 61165.647872004534,
+        "transfer_gib": 931.65625,
+        "transfer_ratio": 1.1192116377287658
+      },
+      "lru": {
+        "hit_rate": 0.9021333333333333,
+        "hits": 13532,
+        "mean_ttft_ms": 3.7540926122669163,
+        "mean_ttft_ratio": 0.22883279832232845,
+        "p50_ttft_ms": 3.3554432000000003,
+        "p95_ttft_ms": 13.17691392,
+        "p95_ttft_ratio": 0.3263121378840255,
+        "p99_ttft_ms": 40.38131712,
+        "requests": 15000,
+        "total_ttft_ms": 56311.38918400375,
+        "transfer_gib": 912.6640625,
+        "transfer_ratio": 1.0963960581886438
+      },
+      "no_cache": {
+        "hit_rate": 0.0,
+        "hits": 0,
+        "mean_ttft_ms": 16.40539572906411,
+        "mean_ttft_ratio": 1.0,
+        "p50_ttft_ms": 18.093506559999998,
+        "p95_ttft_ms": 40.38131712,
+        "p95_ttft_ratio": 1.0,
+        "p99_ttft_ms": 40.38131712,
+        "requests": 15000,
+        "total_ttft_ms": 246080.93593596166,
+        "transfer_gib": 832.421875,
+        "transfer_ratio": 1.0
+      },
+      "second_touch": {
+        "hit_rate": 0.8965333333333333,
+        "hits": 13448,
+        "mean_ttft_ms": 3.838569403733608,
+        "mean_ttft_ratio": 0.2339821280222534,
+        "p50_ttft_ms": 3.3554432000000003,
+        "p95_ttft_ms": 13.17691392,
+        "p95_ttft_ratio": 0.3263121378840255,
+        "p99_ttft_ms": 40.38131712,
+        "requests": 15000,
+        "total_ttft_ms": 57578.54105600412,
+        "transfer_gib": 877.5234375,
+        "transfer_ratio": 1.0541811356170812
+      },
+      "size_threshold_256": {
+        "hit_rate": 0.6546,
+        "hits": 9819,
+        "mean_ttft_ms": 4.456385467733481,
+        "mean_ttft_ratio": 0.2716414490287768,
+        "p50_ttft_ms": 3.3554432000000003,
+        "p95_ttft_ms": 8.52246528,
+        "p95_ttft_ratio": 0.21104971030722042,
+        "p99_ttft_ms": 40.38131712,
+        "requests": 15000,
+        "total_ttft_ms": 66845.78201600222,
+        "transfer_gib": 899.03125,
+        "transfer_ratio": 1.0800187705302675
+      }
+    }
+  },
+  "summary": {
+    "fifo": {
+      "geomean_mean_ttft_ratio": 0.28797170314099096,
+      "geomean_p95_ttft_ratio": 0.4015371086969219
+    },
+    "lru": {
+      "geomean_mean_ttft_ratio": 0.2658036966356412,
+      "geomean_p95_ttft_ratio": 0.34447853208012114
+    },
+    "no_cache": {
+      "geomean_mean_ttft_ratio": 1.0,
+      "geomean_p95_ttft_ratio": 1.0
+    },
+    "second_touch": {
+      "geomean_mean_ttft_ratio": 0.2754447503189954,
+      "geomean_p95_ttft_ratio": 0.38598201535990595
+    },
+    "size_threshold_256": {
+      "geomean_mean_ttft_ratio": 0.2945499234733202,
+      "geomean_p95_ttft_ratio": 0.31572754173610956
+    }
+  }
+}

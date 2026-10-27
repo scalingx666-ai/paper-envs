@@ -1,0 +1,74 @@
+{
+  "hidden_bursty_multimodal": {
+    "mean_ttft_ms": 32.717692560210594,
+    "p50_ttft_ms": 24.754636799999997,
+    "p95_ttft_ms": 77.438592,
+    "p99_ttft_ms": 148.7849472,
+    "requests": 18000,
+    "total_ttft_ms": 588918.4660837906,
+    "transfer_gib": 1878.5322265625
+  },
+  "hidden_long_slow_fabric": {
+    "mean_ttft_ms": 361.6140940629002,
+    "p50_ttft_ms": 242.9206528,
+    "p95_ttft_ms": 857.2370943999999,
+    "p99_ttft_ms": 857.2370943999999,
+    "requests": 12000,
+    "total_ttft_ms": 4339369.128754803,
+    "transfer_gib": 6505.5
+  },
+  "hidden_low_reuse": {
+    "mean_ttft_ms": 17.87774554111787,
+    "p50_ttft_ms": 18.093506559999998,
+    "p95_ttft_ms": 46.60862976,
+    "p99_ttft_ms": 46.60862976,
+    "requests": 20000,
+    "total_ttft_ms": 357554.91082235746,
+    "transfer_gib": 1184.53125
+  },
+  "hidden_mixed_scan": {
+    "mean_ttft_ms": 115.45246582225596,
+    "p50_ttft_ms": 18.093506559999998,
+    "p95_ttft_ms": 792.81258496,
+    "p99_ttft_ms": 792.81258496,
+    "requests": 22000,
+    "total_ttft_ms": 2539954.248089631,
+    "transfer_gib": 4322.79296875
+  },
+  "hidden_session_local": {
+    "mean_ttft_ms": 23.717933316994117,
+    "p50_ttft_ms": 20.65010688,
+    "p95_ttft_ms": 52.066828799999996,
+    "p99_ttft_ms": 104.80942080000001,
+    "requests": 20000,
+    "total_ttft_ms": 474358.66633988236,
+    "transfer_gib": 1500.64306640625
+  },
+  "hidden_strong_drift": {
+    "mean_ttft_ms": 20.940033035166824,
+    "p50_ttft_ms": 18.093506559999998,
+    "p95_ttft_ms": 46.60862976,
+    "p99_ttft_ms": 46.60862976,
+    "requests": 22000,
+    "total_ttft_ms": 460680.7267736701,
+    "transfer_gib": 1491.9375
+  },
+  "hidden_tight_text": {
+    "mean_ttft_ms": 17.49811469926075,
+    "p50_ttft_ms": 18.093506559999998,
+    "p95_ttft_ms": 40.38131712,
+    "p99_ttft_ms": 40.38131712,
+    "requests": 20000,
+    "total_ttft_ms": 349962.293985215,
+    "transfer_gib": 1153.546875
+  },
+  "hidden_video_expensive": {
+    "mean_ttft_ms": 107.11665049999756,
+    "p50_ttft_ms": 25.1799552,
+    "p95_ttft_ms": 857.2370943999999,
+    "p99_ttft_ms": 857.2370943999999,
+    "requests": 16000,
+    "total_ttft_ms": 1713866.407999961,
+    "transfer_gib": 2806.76513671875
+  }
+}
