@@ -1,6 +1,7 @@
 .env.local
 .mcode-data/
 runs/
+_stale/
 envs/_stale/
 karotte_env/_stale/
 karotte_env/.venv/

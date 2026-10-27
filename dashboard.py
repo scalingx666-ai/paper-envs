@@ -208,23 +208,46 @@ def collect() -> dict:
         "run": latest_run,
         "topics": by_topic,
         "papers": papers,
-        "benchmark": {
-            "slug": "disagg-kv-retention",
-            "title": "Disaggregated KV retention",
-            "status": "benchmark-grade",
-            "hidden_workloads": 8,
-            "gates": "5 performance gates + contract + determinism",
-            "desc": (
-                "Online KV-cache admission and eviction for a disaggregated LLM serving pool. "
-                "The verifier runs the submitted policy as an unprivileged child over eight "
-                "held-out workloads and requires every conjunctive gate; reward is binary. "
-                "Generated envs below are demo-grade and use exact-output grading."
-            ),
-            "reference": {"geomean": 0.378, "total": 0.439, "p95": 0.448},
-            "independent": {"geomean": 0.380, "total": 0.441, "p95": 0.429},
-            "starter": {"geomean": 0.405, "total": 0.492, "p95": 0.572},
-            "readme": "benchmarks/disagg-kv-retention/README.md",
-        },
+        "benchmarks": [
+            {
+                "slug": "disagg-kv-retention",
+                "title": "Disaggregated KV retention",
+                "status": "benchmark-grade",
+                "hidden_workloads": 8,
+                "gates": "5 performance gates + contract + determinism",
+                "desc": (
+                    "Online KV-cache admission and eviction for a disaggregated LLM serving pool. "
+                    "The verifier runs the submitted policy as an unprivileged child over eight "
+                    "held-out workloads and requires every conjunctive gate; reward is binary. "
+                    "Generated envs below are demo-grade and use exact-output grading."
+                ),
+                "stats": [
+                    {"k": "reference · geo / total / p95", "v": [0.378, 0.439, 0.448]},
+                    {"k": "independent CTLFU · geo / total / p95", "v": [0.380, 0.441, 0.429]},
+                    {"k": "starter LRU · fails 3 gates", "v": [0.405, 0.492, 0.572]},
+                ],
+                "readme": "benchmarks/disagg-kv-retention/README.md",
+            },
+            {
+                "slug": "async-rollout-scheduling",
+                "title": "Async rollout scheduling",
+                "status": "benchmark-grade",
+                "hidden_workloads": 8,
+                "gates": "6 gates per workload + 4 aggregate + determinism",
+                "desc": (
+                    "Batching and admission for a fully asynchronous RL-VLA pipeline. The verifier "
+                    "runs the submitted scheduler as an unprivileged child over eight held-out "
+                    "workloads and prices throughput against policy-version lag and sample age; "
+                    "reward is binary. The full-batch starter clears throughput but fails freshness."
+                ),
+                "stats": [
+                    {"k": "reference · geo / mean lag / worst speedup", "v": [1.846, 2.492, 1.591]},
+                    {"k": "independent pair/full · geo / mean lag", "v": [1.885, 2.516]},
+                    {"k": "starter full-batch · fails 7/8", "v": [1.927, 4.360, 1.777]},
+                ],
+                "readme": "benchmarks/async-rollout-scheduling/README.md",
+            },
+        ],
         "karotte": {
             "path": _uri(KAROTTE_DIR),
             "tasks": karotte_tasks,
@@ -295,6 +318,8 @@ HTML = r"""<!doctype html>
   .stat .k { color: var(--muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
   .stat .v { font-size: 26px; font-weight: 750; margin-top: 3px; letter-spacing: -.02em; }
   .stat .v small { font-size: 12px; color: var(--dim); font-weight: 500; }
+  .bench-stack { display: grid; gap: 14px; margin: 22px 0 8px; }
+  .bench-stack .bench { margin: 0; }
   .bench {
     border: 1px solid rgba(94,234,212,.35);
     background: linear-gradient(120deg, rgba(20,45,52,.75), rgba(13,20,32,.95));
@@ -474,7 +499,7 @@ HTML = r"""<!doctype html>
     </div>
     <div class="pipeline" id="pipeline"></div>
     <div class="stats" id="stats"></div>
-    <section class="bench" id="bench"></section>
+    <div class="bench-stack" id="bench"></div>
   </header>
 
   <div class="toolbar">
@@ -569,9 +594,9 @@ function renderHeader() {
   $("#stats").innerHTML = stats.map(([k, v, small]) =>
     `<div class="stat"><div class="k">${esc(k)}</div><div class="v">${esc(v)} <small>${esc(small)}</small></div></div>`
   ).join("");
-  const b = DATA.benchmark;
-  if (b) {
-    $("#bench").innerHTML = `
+  const bench = DATA.benchmarks || [];
+  $("#bench").innerHTML = bench.map(b => `
+    <section class="bench">
       <div class="head">
         <h2>Benchmark tier · ${esc(b.title)}</h2>
         <span class="tag">${esc(b.status)}</span>
@@ -579,13 +604,10 @@ function renderHeader() {
         <span class="pill">${esc(b.gates)}</span>
       </div>
       <div class="desc">${esc(b.desc)}</div>
-      <div class="nums">
-        <div class="num"><div class="k">reference · geo / total / p95</div><div class="v">${fmt(b.reference.geomean, 3)} / ${fmt(b.reference.total, 3)} / ${fmt(b.reference.p95, 3)}</div></div>
-        <div class="num"><div class="k">independent CTLFU · geo / total / p95</div><div class="v">${fmt(b.independent.geomean, 3)} / ${fmt(b.independent.total, 3)} / ${fmt(b.independent.p95, 3)}</div></div>
-        <div class="num"><div class="k">starter LRU · fails 3 gates</div><div class="v">${fmt(b.starter.geomean, 3)} / ${fmt(b.starter.total, 3)} / ${fmt(b.starter.p95, 3)}</div></div>
-      </div>
-      <div class="desc"><a href="${esc(b.readme)}" target="_blank">task README</a> · <a href="benchmarks/README.md" target="_blank">benchmark index</a> · binary conjunctive reward</div>`;
-  }
+      <div class="nums">${b.stats.map(s => `
+        <div class="num"><div class="k">${esc(s.k)}</div><div class="v">${s.v.map(x => fmt(x, 3)).join(" / ")}</div></div>`).join("")}</div>
+      <div class="desc"><a href="${esc(b.readme)}" target="_blank">task README</a> · <a href="benchmarks/README.md" target="_blank">benchmark index</a> · binary conjunctive reward</div>
+    </section>`).join("");
   const model = DATA.model?.name || "tierflow_pro";
   const effort = DATA.model?.effort || "max";
   $("#generated").textContent = `generated ${DATA.generated_at} · ${model} · effort=${effort} · ${DATA.summary.karotte_tasks} Karotte tasks`;

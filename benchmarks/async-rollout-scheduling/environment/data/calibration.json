@@ -1,0 +1,175 @@
+{
+  "note": "Baseline metrics on the five public development workloads. Hidden workloads, the reference policy, and all thresholds are not included in the agent image.",
+  "workloads": {
+    "public_balanced": {
+      "age_first": {
+        "avg_age_ratio": 0.3502,
+        "avg_inference_batch": 4.3889,
+        "avg_policy_lag": 3.0063,
+        "avg_training_batch": 5.2667,
+        "p95_policy_lag": 4,
+        "speedup": 1.804
+      },
+      "full_batch": {
+        "avg_age_ratio": 0.3186,
+        "avg_inference_batch": 4.0513,
+        "avg_policy_lag": 3.2722,
+        "avg_training_batch": 4.6471,
+        "p95_policy_lag": 4,
+        "speedup": 1.8592
+      },
+      "half_batch": {
+        "avg_age_ratio": 0.3212,
+        "avg_inference_batch": 4.6471,
+        "avg_policy_lag": 2.9684,
+        "avg_training_batch": 5.2667,
+        "p95_policy_lag": 4,
+        "speedup": 1.8118
+      },
+      "one_at_a_time": {
+        "avg_age_ratio": 5.2367,
+        "avg_inference_batch": 1.0,
+        "avg_policy_lag": 16.2848,
+        "avg_training_batch": 1.0,
+        "p95_policy_lag": 28,
+        "speedup": 0.6153
+      }
+    },
+    "public_bimodal": {
+      "age_first": {
+        "avg_age_ratio": 0.3614,
+        "avg_inference_batch": 5.5283,
+        "avg_policy_lag": 3.0205,
+        "avg_training_batch": 7.1463,
+        "p95_policy_lag": 5,
+        "speedup": 1.9897
+      },
+      "full_batch": {
+        "avg_age_ratio": 0.2921,
+        "avg_inference_batch": 5.0517,
+        "avg_policy_lag": 3.5461,
+        "avg_training_batch": 5.7451,
+        "p95_policy_lag": 6,
+        "speedup": 2.0947
+      },
+      "half_batch": {
+        "avg_age_ratio": 0.3331,
+        "avg_inference_batch": 6.3696,
+        "avg_policy_lag": 3.198,
+        "avg_training_batch": 6.814,
+        "p95_policy_lag": 6,
+        "speedup": 2.0381
+      },
+      "one_at_a_time": {
+        "avg_age_ratio": 7.3295,
+        "avg_inference_batch": 1.0,
+        "avg_policy_lag": 25.0068,
+        "avg_training_batch": 1.0,
+        "p95_policy_lag": 43,
+        "speedup": 0.595
+      }
+    },
+    "public_drift": {
+      "age_first": {
+        "avg_age_ratio": 0.3686,
+        "avg_inference_batch": 4.8333,
+        "avg_policy_lag": 2.8333,
+        "avg_training_batch": 6.2143,
+        "p95_policy_lag": 4,
+        "speedup": 1.6739
+      },
+      "full_batch": {
+        "avg_age_ratio": 0.2219,
+        "avg_inference_batch": 4.2439,
+        "avg_policy_lag": 3.7874,
+        "avg_training_batch": 4.2439,
+        "p95_policy_lag": 6,
+        "speedup": 1.7265
+      },
+      "half_batch": {
+        "avg_age_ratio": 0.2755,
+        "avg_inference_batch": 4.8333,
+        "avg_policy_lag": 3.4195,
+        "avg_training_batch": 4.9714,
+        "p95_policy_lag": 5,
+        "speedup": 1.6912
+      },
+      "one_at_a_time": {
+        "avg_age_ratio": 3.6807,
+        "avg_inference_batch": 1.0,
+        "avg_policy_lag": 14.5115,
+        "avg_training_batch": 1.0,
+        "p95_policy_lag": 25,
+        "speedup": 0.6085
+      }
+    },
+    "public_heavy": {
+      "age_first": {
+        "avg_age_ratio": 0.5286,
+        "avg_inference_batch": 6.36,
+        "avg_policy_lag": 3.1195,
+        "avg_training_batch": 6.913,
+        "p95_policy_lag": 5,
+        "speedup": 2.1688
+      },
+      "full_batch": {
+        "avg_age_ratio": 0.5852,
+        "avg_inference_batch": 5.6786,
+        "avg_policy_lag": 3.1887,
+        "avg_training_batch": 5.8889,
+        "p95_policy_lag": 5,
+        "speedup": 2.2697
+      },
+      "half_batch": {
+        "avg_age_ratio": 0.5735,
+        "avg_inference_batch": 6.36,
+        "avg_policy_lag": 3.1195,
+        "avg_training_batch": 6.36,
+        "p95_policy_lag": 5,
+        "speedup": 2.1333
+      },
+      "one_at_a_time": {
+        "avg_age_ratio": 5.7508,
+        "avg_inference_batch": 1.0,
+        "avg_policy_lag": 16.1195,
+        "avg_training_batch": 1.0,
+        "p95_policy_lag": 28,
+        "speedup": 0.6779
+      }
+    },
+    "public_mixed": {
+      "age_first": {
+        "avg_age_ratio": 0.4116,
+        "avg_inference_batch": 7.2059,
+        "avg_policy_lag": 2.6367,
+        "avg_training_batch": 8.1667,
+        "p95_policy_lag": 4,
+        "speedup": 1.9525
+      },
+      "full_batch": {
+        "avg_age_ratio": 0.3549,
+        "avg_inference_batch": 6.8056,
+        "avg_policy_lag": 2.951,
+        "avg_training_batch": 7.0,
+        "p95_policy_lag": 4,
+        "speedup": 1.9859
+      },
+      "half_batch": {
+        "avg_age_ratio": 0.4168,
+        "avg_inference_batch": 7.6562,
+        "avg_policy_lag": 3.0286,
+        "avg_training_batch": 8.1667,
+        "p95_policy_lag": 4,
+        "speedup": 1.9507
+      },
+      "one_at_a_time": {
+        "avg_age_ratio": 6.9543,
+        "avg_inference_batch": 1.0,
+        "avg_policy_lag": 18.3184,
+        "avg_training_batch": 1.0,
+        "p95_policy_lag": 32,
+        "speedup": 0.4611
+      }
+    }
+  }
+}

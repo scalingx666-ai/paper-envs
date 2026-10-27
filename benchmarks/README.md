@@ -9,6 +9,7 @@ independent implementations, and validated in Linux containers.
 | Task | Domain | Paper | Holdout | Reward | Status |
 |:--|:--|:--|--:|:--|:--|
 | [`disagg-kv-retention`](disagg-kv-retention/) | ML systems / KV-cache policy | Liu et al., SYSTOR '26 | 8 workloads | binary | validated in Docker |
+| [`async-rollout-scheduling`](async-rollout-scheduling/) | ML systems / async RL scheduling | Sun et al., arXiv:2602.05765 | 8 workloads | binary | validated in Docker |
 
 ### `disagg-kv-retention`
 
@@ -30,6 +31,42 @@ Full gate table, threshold calibration, and anti-cheat details are in the
 [task README](disagg-kv-retention/README.md). The task statement is
 [instruction.md](disagg-kv-retention/instruction.md); the Harbor configuration
 is [task.toml](disagg-kv-retention/task.toml).
+
+### `async-rollout-scheduling`
+
+The agent implements the batching and admission scheduler for a fully
+asynchronous RL-VLA pipeline: environment shards emit rollout segments, an
+inference server batches them, and a trainer consumes them while the policy
+version advances. The verifier runs the submitted `SchedulerPolicy` as an
+unprivileged child over eight hidden workloads and applies six calibrated
+performance gates per workload plus aggregate, contract, and determinism
+checks.
+
+| Submission | Reward | Result |
+|:--|:--|:--|
+| reference (half/full thresholds) | 1 | 8/8, geomean 1.846, mean lag 2.49 |
+| independent pair/full scheduler | 1 | 8/8, geomean 1.885, mean lag 2.52 |
+| full-batch starter | 0 | fails lag and batch gates on 7/8 |
+| age-first | 0 | fails lag on bursty/drift and speedup on low-overhead |
+| half-batch | 0 | fails mean and p95 lag |
+| one-at-a-time / train-immediate | 0 | fails throughput and freshness everywhere |
+| no-op / hidden-trace cheat | 0 | stall / contract failure |
+| empty | 0 | missing artifact |
+
+Full gate table, margin analysis, and provenance details are in the
+[task README](async-rollout-scheduling/README.md). The task statement is
+[instruction.md](async-rollout-scheduling/instruction.md); the Harbor
+configuration is [task.toml](async-rollout-scheduling/task.toml).
+
+```bash
+cd async-rollout-scheduling
+docker build -t asyncrl-env:v1 environment
+docker build -t asyncrl-tests:v1 tests
+docker run --rm asyncrl-env:v1 sh -c \
+  'python starter/check_policy.py --policy starter/policy.py'
+docker run --rm -v "$PWD/solution/policy.py:/app/policy.py:ro" \
+  asyncrl-tests:v1 bash /tests/test.sh
+```
 
 ## What benchmark-grade means here
 

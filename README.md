@@ -40,14 +40,16 @@ high demo score is not evidence of generalization. Benchmark tasks never expose
 the holdout, grade only the delivered artifact, and include at least one
 independent correct implementation and several comparators that fail.
 
-### Benchmark pilot: `disagg-kv-retention`
+### Benchmark tasks
 
-`benchmarks/disagg-kv-retention/` is the reference for the benchmark tier. It
-asks for an online KV-cache retention policy for a disaggregated LLM serving
-pool, following Liu et al., SYSTOR '26. The agent gets five public workloads,
-the simulator, the cost model, and an LRU starter; the verifier runs the
-submitted policy as an unprivileged child over eight hidden workloads and
-applies five calibrated performance gates plus contract and determinism checks.
+Two hand-authored tasks establish the tier.
+
+`benchmarks/disagg-kv-retention/` asks for an online KV-cache retention policy
+for a disaggregated LLM serving pool, following Liu et al., SYSTOR '26. The
+agent gets five public workloads, the simulator, the cost model, and an LRU
+starter; the verifier runs the submitted policy as an unprivileged child over
+eight hidden workloads and applies five calibrated performance gates plus
+contract and determinism checks.
 
 | Submission | Reward | Evidence |
 |:--|:--|:--|
@@ -58,22 +60,39 @@ applies five calibrated performance gates plus contract and determinism checks.
 | hidden-trace cheat | 0 | contract violation + performance failure |
 | empty submission | 0 | missing artifact |
 
-The task README records the full comparator table, threshold calibration, and
-anti-cheat design. Reproduce the verifier locally with:
+`benchmarks/async-rollout-scheduling/` asks for the batching scheduler of a
+fully asynchronous RL-VLA pipeline, following Sun et al., arXiv:2602.05765.
+The agent gets five public workloads, the discrete-event simulator, calibration
+data, and a full-batch starter; the verifier runs the submitted scheduler over
+eight hidden workloads and applies six performance gates per workload, four
+aggregate gates, contract checks, and a determinism check.
+
+| Submission | Reward | Evidence |
+|:--|:--|:--|
+| reference (half/full thresholds) | 1 | 8/8 tests, geomean 1.846, mean lag 2.49 |
+| independent pair/full | 1 | 8/8 tests, geomean 1.885, mean lag 2.52 |
+| full-batch starter | 0 | fails lag and batch gates on 7/8 |
+| age-first / half-batch | 0 | fail lag; age-first also misses low-overhead speedup |
+| one-at-a-time / train-immediate | 0 | fail throughput and freshness everywhere |
+| no-op / hidden-trace cheat | 0 | stall / contract failure |
+| empty submission | 0 | missing artifact |
+
+Each task README records the full comparator table, threshold calibration, and
+anti-cheat design. Reproduce the async verifier locally with:
 
 ```bash
-cd benchmarks/disagg-kv-retention
-docker build -t kvret-env:v3 environment
-docker build -t kvret-tests:v4 tests
-docker run --rm kvret-env:v3 sh -c \
+cd benchmarks/async-rollout-scheduling
+docker build -t asyncrl-env:v1 environment
+docker build -t asyncrl-tests:v1 tests
+docker run --rm asyncrl-env:v1 sh -c \
   'python starter/check_policy.py --policy starter/policy.py'
 # grade a policy: mount it at /app/policy.py in the tests image
-docker run --rm -v "$PWD/policy.py:/app/policy.py:ro" kvret-tests:v4 \
-  bash /tests/test.sh
+docker run --rm -v "$PWD/solution/policy.py:/app/policy.py:ro" \
+  asyncrl-tests:v1 bash /tests/test.sh
 ```
 
-The benchmark README explains why this paper met the bar; the next section
-records the bar itself.
+The task README explains why each paper met the bar; the next section records
+the bar itself.
 
 ## Benchmark selection criteria
 
@@ -261,7 +280,7 @@ inference-infra.
 - Generated demo tasks are offline, stdlib-only, and finish in under 60 seconds.
   Benchmark tasks give the agent open network access, but the graded artifact is
   stdlib-only and the verifier runs with no network.
-- The benchmark pilot was built and graded with Docker 29.8 in Linux
+- Both benchmark tasks were built and graded with Docker 29.8 in Linux
   containers; generated tasks are validated with the local sandbox rather than
   a Harbor image build.
 - Benchmark rewards are binary and conjunctive; demo rewards are the fraction

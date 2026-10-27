@@ -1,0 +1,13 @@
+{
+  "chunk_steps": 8,
+  "env_count": 28,
+  "inference_base": 60,
+  "inference_per_item": 7,
+  "max_inference_batch": 14,
+  "max_training_batch": 12,
+  "nominal_segment_ms": 162,
+  "seed": 105,
+  "training_base": 70,
+  "training_per_item": 6,
+  "workload": "public_mixed"
+}

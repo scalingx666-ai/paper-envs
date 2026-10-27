@@ -1,0 +1,58 @@
+{
+  "hidden_balanced": {
+    "config_sha256": "11fc2f04763a4c29f05805c9fdebc048225066af42223b7aee785862606eb609",
+    "mean_duration": 161.25,
+    "sync_makespan": 7395,
+    "total_segments": 196,
+    "trace_sha256": "2241bd728d66fe925291ccab24dbdeaea3d3792137bcbfc4bab01740eea8da2d"
+  },
+  "hidden_bimodal": {
+    "config_sha256": "9b9556ec114fcddc767a5967a007ca170b7798033153dcd93572d3f95f0ea816",
+    "mean_duration": 239.61607142857142,
+    "sync_makespan": 14511,
+    "total_segments": 336,
+    "trace_sha256": "661b2edc0bf56eaf4646e9410b8c869027e49ac5a2d42dd9373496e02f0cb865"
+  },
+  "hidden_bursty": {
+    "config_sha256": "fe290804ff8a9b58bac64a0c56a47a4295da5eb41cf99635b050e9a1cf1b9ca4",
+    "mean_duration": 249.13253012048193,
+    "sync_makespan": 10942,
+    "total_segments": 332,
+    "trace_sha256": "e60bd5049ff4206a15f8ff36892acc46ed5aa9eb8629159506bc25566ccc13f4"
+  },
+  "hidden_drift": {
+    "config_sha256": "79a9c5cbb85c04856a4dd72efb7890bf444ac06aa18a40e79fb3fac3339d1ea7",
+    "mean_duration": 206.58515283842794,
+    "sync_makespan": 8732,
+    "total_segments": 229,
+    "trace_sha256": "6338091432b5d5bb9b6e7b8ba0b2b5ff8b3537826adb10223a9573fb6b452f64"
+  },
+  "hidden_heavy": {
+    "config_sha256": "9dcdeac7fcca2cf8982e86599ce47bcabaa242089738f9b26dfb4b5dc012eec7",
+    "mean_duration": 134.41968911917098,
+    "sync_makespan": 7837,
+    "total_segments": 193,
+    "trace_sha256": "02b0f144d2dcd6d536ea7f1b0463ebb535ad4796b40abef38552612dc710f98d"
+  },
+  "hidden_high_overhead": {
+    "config_sha256": "18e57aae7bf99bfe794e4a10df97b0f9f1673bb2501d09c7e46e45da68e58025",
+    "mean_duration": 182.126213592233,
+    "sync_makespan": 12746,
+    "total_segments": 309,
+    "trace_sha256": "c83014727e4795fa87d2df6e622498ddb206de38774eb44e1d46e5965a86920a"
+  },
+  "hidden_low_overhead": {
+    "config_sha256": "b06e98c4e7d0a7e667ba17fe69cd4607274d8097559248c43da95f0f53b23ff0",
+    "mean_duration": 184.26108374384236,
+    "sync_makespan": 6422,
+    "total_segments": 203,
+    "trace_sha256": "cdd172948635c6c3cdfbd59f650d4ba74432e976c662eb6e8ad4c322b0bef1f6"
+  },
+  "hidden_session": {
+    "config_sha256": "0287bf979d4891b1888e31d23703367772c67819f901e046d393b224bbf0d785",
+    "mean_duration": 152.95611285266457,
+    "sync_makespan": 8617,
+    "total_segments": 319,
+    "trace_sha256": "5e42e5157d859709c49f15afe7d31e9803eca623a1099f092560ff341caa4b5b"
+  }
+}

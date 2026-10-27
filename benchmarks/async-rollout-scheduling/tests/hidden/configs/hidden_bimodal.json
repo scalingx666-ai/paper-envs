@@ -1,0 +1,13 @@
+{
+  "chunk_steps": 8,
+  "env_count": 26,
+  "inference_base": 58,
+  "inference_per_item": 7,
+  "max_inference_batch": 13,
+  "max_training_batch": 11,
+  "nominal_segment_ms": 240,
+  "seed": 203,
+  "training_base": 68,
+  "training_per_item": 7,
+  "workload": "hidden_bimodal"
+}

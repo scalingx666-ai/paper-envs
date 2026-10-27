@@ -1,0 +1,285 @@
+[
+  {
+    "name": "public_balanced",
+    "split": "public",
+    "seed": 101,
+    "env_count": 16,
+    "segments": [
+      8,
+      12
+    ],
+    "shape": "uniform",
+    "duration": [
+      80,
+      220
+    ],
+    "max_inference_batch": 8,
+    "max_training_batch": 8,
+    "inference_base": 45,
+    "inference_per_item": 8,
+    "training_base": 55,
+    "training_per_item": 8
+  },
+  {
+    "name": "public_heavy",
+    "split": "public",
+    "seed": 102,
+    "env_count": 20,
+    "segments": [
+      6,
+      10
+    ],
+    "shape": "heavy",
+    "duration": [
+      70,
+      140,
+      0.55
+    ],
+    "max_inference_batch": 10,
+    "max_training_batch": 8,
+    "inference_base": 40,
+    "inference_per_item": 9,
+    "training_base": 50,
+    "training_per_item": 8
+  },
+  {
+    "name": "public_bimodal",
+    "split": "public",
+    "seed": 103,
+    "env_count": 24,
+    "segments": [
+      10,
+      14
+    ],
+    "shape": "bimodal",
+    "duration": [
+      95,
+      145,
+      380,
+      520,
+      0.72
+    ],
+    "max_inference_batch": 12,
+    "max_training_batch": 10,
+    "inference_base": 55,
+    "inference_per_item": 7,
+    "training_base": 65,
+    "training_per_item": 7
+  },
+  {
+    "name": "public_drift",
+    "split": "public",
+    "seed": 104,
+    "env_count": 18,
+    "segments": [
+      8,
+      12
+    ],
+    "shape": "drift",
+    "duration": [
+      90,
+      300
+    ],
+    "max_inference_batch": 8,
+    "max_training_batch": 8,
+    "inference_base": 50,
+    "inference_per_item": 8,
+    "training_base": 60,
+    "training_per_item": 7
+  },
+  {
+    "name": "public_mixed",
+    "split": "public",
+    "seed": 105,
+    "env_count": 28,
+    "segments": [
+      6,
+      12
+    ],
+    "shape": "mixed",
+    "duration": [
+      70,
+      260
+    ],
+    "max_inference_batch": 14,
+    "max_training_batch": 12,
+    "inference_base": 60,
+    "inference_per_item": 7,
+    "training_base": 70,
+    "training_per_item": 6
+  },
+  {
+    "name": "hidden_balanced",
+    "split": "hidden",
+    "seed": 201,
+    "env_count": 18,
+    "segments": [
+      9,
+      13
+    ],
+    "shape": "uniform",
+    "duration": [
+      85,
+      235
+    ],
+    "max_inference_batch": 9,
+    "max_training_batch": 8,
+    "inference_base": 48,
+    "inference_per_item": 8,
+    "training_base": 58,
+    "training_per_item": 8
+  },
+  {
+    "name": "hidden_heavy",
+    "split": "hidden",
+    "seed": 202,
+    "env_count": 22,
+    "segments": [
+      7,
+      11
+    ],
+    "shape": "heavy",
+    "duration": [
+      75,
+      150,
+      0.6
+    ],
+    "max_inference_batch": 11,
+    "max_training_batch": 9,
+    "inference_base": 42,
+    "inference_per_item": 9,
+    "training_base": 52,
+    "training_per_item": 8
+  },
+  {
+    "name": "hidden_bimodal",
+    "split": "hidden",
+    "seed": 203,
+    "env_count": 26,
+    "segments": [
+      11,
+      15
+    ],
+    "shape": "bimodal",
+    "duration": [
+      100,
+      150,
+      400,
+      540,
+      0.68
+    ],
+    "max_inference_batch": 13,
+    "max_training_batch": 11,
+    "inference_base": 58,
+    "inference_per_item": 7,
+    "training_base": 68,
+    "training_per_item": 7
+  },
+  {
+    "name": "hidden_drift",
+    "split": "hidden",
+    "seed": 204,
+    "env_count": 20,
+    "segments": [
+      9,
+      13
+    ],
+    "shape": "drift",
+    "duration": [
+      85,
+      320
+    ],
+    "max_inference_batch": 9,
+    "max_training_batch": 8,
+    "inference_base": 52,
+    "inference_per_item": 8,
+    "training_base": 62,
+    "training_per_item": 7
+  },
+  {
+    "name": "hidden_bursty",
+    "split": "hidden",
+    "seed": 205,
+    "env_count": 30,
+    "segments": [
+      8,
+      14
+    ],
+    "shape": "bursty",
+    "duration": [
+      70,
+      260,
+      5
+    ],
+    "max_inference_batch": 15,
+    "max_training_batch": 12,
+    "inference_base": 65,
+    "inference_per_item": 6,
+    "training_base": 75,
+    "training_per_item": 6
+  },
+  {
+    "name": "hidden_session",
+    "split": "hidden",
+    "seed": 206,
+    "env_count": 36,
+    "segments": [
+      6,
+      12
+    ],
+    "shape": "session",
+    "duration": [
+      65,
+      240,
+      0.45
+    ],
+    "max_inference_batch": 16,
+    "max_training_batch": 14,
+    "inference_base": 55,
+    "inference_per_item": 7,
+    "training_base": 65,
+    "training_per_item": 6
+  },
+  {
+    "name": "hidden_low_overhead",
+    "split": "hidden",
+    "seed": 207,
+    "env_count": 14,
+    "segments": [
+      12,
+      16
+    ],
+    "shape": "uniform",
+    "duration": [
+      110,
+      260
+    ],
+    "max_inference_batch": 6,
+    "max_training_batch": 6,
+    "inference_base": 5,
+    "inference_per_item": 6,
+    "training_base": 6,
+    "training_per_item": 5
+  },
+  {
+    "name": "hidden_high_overhead",
+    "split": "hidden",
+    "seed": 208,
+    "env_count": 32,
+    "segments": [
+      7,
+      13
+    ],
+    "shape": "mixed",
+    "duration": [
+      80,
+      280
+    ],
+    "max_inference_batch": 16,
+    "max_training_batch": 16,
+    "inference_base": 85,
+    "inference_per_item": 9,
+    "training_base": 105,
+    "training_per_item": 8
+  }
+]

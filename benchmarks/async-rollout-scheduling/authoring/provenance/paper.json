@@ -1,0 +1,33 @@
+{
+  "title": "RL-VLA^3: A Flexible and Asynchronous Reinforcement Learning Framework for VLA Training",
+  "authors": [
+    "Haoran Sun",
+    "Yongjian Guo",
+    "Zhong Guan",
+    "Shuai Di",
+    "Xiaodong Bai",
+    "Jing Long",
+    "Tianyun Zhao",
+    "Mingxi Luo",
+    "Hongke Zhao",
+    "Likang Wu",
+    "Xiaotie Deng",
+    "Xu Chu",
+    "Xi Xiao",
+    "Sheng Wen",
+    "Yicheng Gong",
+    "Junwu Xiong"
+  ],
+  "venue": "arXiv preprint arXiv:2602.05765v3",
+  "year": 2026,
+  "paper_url": "https://arxiv.org/abs/2602.05765v3",
+  "paper_use": [
+    "problem framing: a fully asynchronous RL pipeline for VLA training in which simulation, policy inference, and optimization overlap instead of alternating in lockstep",
+    "system structure: environment shards emit rollout segments that are dynamically batched by an inference server and consumed by a trainer",
+    "design goal: raise throughput over a synchronous round baseline without changing sample efficiency",
+    "workload taxonomy: variable, resource-heavy simulator latency; long-tailed and bursty segment durations; different shard counts and service costs"
+  ],
+  "deviation": "The paper reports wall-clock results from a distributed GPU implementation. The benchmark abstracts the same scheduling problem into a deterministic discrete-event simulator with integer millisecond service times and synthetic segment traces, so it can be graded offline. It adds an explicit policy-version stamp to every inference request and measures lag at training start; the paper motivates fresh-enough asynchronous updates but does not publish its scheduler's batching thresholds, so the task asks the agent to design them under measured gates rather than to match a published constant.",
+  "independence": "The benchmark ships its own simulator, trace generator, baselines, and reference policy. No source code from the paper's framework is included, and the reference is an independent threshold scheduler rather than a reproduction of the paper's implementation.",
+  "license": "not specified in the arXiv metadata"
+}
